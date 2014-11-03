@@ -90,6 +90,6 @@ class JsonConvertibleParamConverter implements ParamConverterInterface
             return null;
         }
 
-        return is_subclass_of($class, 'Surfnet/StepupBundle/Request/JsonConvertible');
+        return is_subclass_of($class, 'Surfnet\StepupBundle\Request\JsonConvertible');
     }
 }
