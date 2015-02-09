@@ -26,10 +26,6 @@ class Art
      */
     public static function forException($exception)
     {
-        if (!method_exists($exception, 'getMessage')) {
-            throw new \LogicException("No exception or object with method 'getMessage()' given.");
-        }
-
         $exceptionDifferentiator = get_class($exception) . $exception->getMessage();
         $art = substr(abs(crc32(md5($exceptionDifferentiator))), 0, 4);
 
