@@ -29,7 +29,7 @@ class ArtProcessor
     public function __invoke(array $record)
     {
         if (!isset($record['context']['exception'])) {
-            return;
+            return $record;
         }
 
         $record['extra']['art'] = Art::forException($record['context']['exception']);
