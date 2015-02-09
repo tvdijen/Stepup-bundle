@@ -30,6 +30,9 @@ class Art
             throw new \LogicException("No exception or object with method 'getMessage()' given.");
         }
 
-        return substr(abs(crc32(md5($exception->getMessage()))), 0, 4);
+        $exceptionDifferentiator = get_class($exception) . $exception->getMessage();
+        $art = substr(abs(crc32(md5($exceptionDifferentiator))), 0, 4);
+
+        return $art;
     }
 }
