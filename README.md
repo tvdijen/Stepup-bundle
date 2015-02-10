@@ -18,3 +18,7 @@ A Symfony2 bundle that holds shared code and framework integration for all Step-
         $bundles[] = new Surfnet\StepupBundle\SurfnetStepupBundle;
     }
     ```
+
+ * Copy and adjust the error templates to your application folder
+    * `src/Resources/views/Exception/error.html.twig` → `app/Resources/SurfnetStepupBundle/views/Exception/error.html.twig`
+    * `src/Resources/views/Exception/error404.html.twig` → `app/Resources/SurfnetStepupBundle/views/Exception/error404.html.twig`
