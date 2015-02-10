@@ -1,14 +1,14 @@
 {% extends '::base.html.twig' %}
 
-{% block page_title %}{{ 'ss.error.title'|trans({'status_code': statusCode, 'status_text': statusText}) }}{% endblock %}
+{% block page_title %}{{ 'Error' }}{% endblock %}
 
 {% block content %}
     <h2>{{ block('page_title') }}</h2>
 
-    <p>{{ 'ss.error.text.an_error_occurred'|trans({'status_code': statusCode, 'status_text': statusText}) }}</p>
-    <a class="btn btn-primary" href="{{ path('ss_entry_point') }}">{{ 'ss.error.button.go_home'|trans }}</a>
+    <p>{{ 'A error occurred due to an unknown cause. Go back and try again or go to the homepage.' }}</p>
+    <a class="btn btn-primary" href="/">{{ 'To the homepage' }}</a>
 
     <hr>
-    <p>{{ 'ss.error.text.your_art_code'|trans }}: <span class="art">#{{ art }}</span></p>
-    <p>{{ 'ss.error.text.what_were_you_doing_well_fix_it'|trans }}</p>
+    <p>{{ 'The error code for the error is' }}: <span class="art">#{{ art }}</span></p>
+    <p>{{ 'If you think this error is a mistake, please report it to SURFnet.' }}</p>
 {% endblock %}
