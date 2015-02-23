@@ -37,7 +37,7 @@ class ExceptionController extends FrameworkController
 
         return $this->render($template, [
             'exception' => $exception,
-            'art' => Art::forException($exception),
+            'art' => Art::forFlattenException($exception),
             'statusCode' => $statusCode,
             'statusText' => isset(Response::$statusTexts[$statusCode]) ? Response::$statusTexts[$statusCode] : '',
         ]);
