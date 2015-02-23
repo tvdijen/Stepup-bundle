@@ -18,17 +18,36 @@
 
 namespace Surfnet\StepupBundle\Exception;
 
+use Exception;
+use Symfony\Component\Debug\Exception\FlattenException;
+
 class Art
 {
     /**
-     * @param object $exception Not type-hinted against \Exception, as Symfony's FlattenException is not an Exception.
+     * @param Exception $exception
      * @return string
      */
-    public static function forException($exception)
+    public static function forException(Exception $exception)
     {
-        $exceptionDifferentiator = get_class($exception) . $exception->getMessage();
-        $art = substr(abs(crc32(md5($exceptionDifferentiator))), 0, 4);
+        return self::calculateArt(get_class($exception), $exception->getMessage());
+    }
 
-        return $art;
+    /**
+     * @param FlattenException $exception
+     * @return string
+     */
+    public static function forFlattenException(FlattenException $exception)
+    {
+        return self::calculateArt($exception->getClass(), $exception->getMessage());
+    }
+
+    /**
+     * @param string $className
+     * @param string $message
+     * @return string
+     */
+    private static function calculateArt($className, $message)
+    {
+        return $art = substr(abs(crc32(md5($className . $message))), 0, 4);
     }
 }
