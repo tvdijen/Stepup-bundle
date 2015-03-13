@@ -62,9 +62,7 @@ final class SecondFactorType
      */
     public function canSatisfy(Loa $loa)
     {
-        $level = self::$loaLevelTypeMap[$this->type];
-
-        return $loa->levelIsLowerOrEqualTo($level);
+        return $loa->levelIsLowerOrEqualTo($this->getLevel());
     }
 
     /**
@@ -73,9 +71,25 @@ final class SecondFactorType
      */
     public function isSatisfiedBy(Loa $loa)
     {
-        $level = self::$loaLevelTypeMap[$this->type];
+        return $loa->levelIsHigherOrEqualTo($this->getLevel());
+    }
 
-        return $loa->levelIsHigherOrEqualTo($level);
+    /**
+     * @param SecondFactorType $other
+     * @return bool
+     */
+    public function hasEqualOrHigherLoaComparedTo(self $other)
+    {
+        return $this->getLevel() >= $other->getLevel();
+    }
+
+    /**
+     * @param SecondFactorType $other
+     * @return bool
+     */
+    public function hasEqualOrLowerLoaComparedTo(self $other)
+    {
+        return $this->getLevel() <= $other->getLevel();
     }
 
     /**
@@ -93,5 +107,13 @@ final class SecondFactorType
     public function __toString()
     {
         return $this->type;
+    }
+
+    /**
+     * @return int
+     */
+    private function getLevel()
+    {
+        return self::$loaLevelTypeMap[$this->type];
     }
 }

@@ -67,4 +67,15 @@ final class SecondFactorTypeTest extends TestCase
     {
         $this->assertTrue((new SecondFactorType('sms'))->equals(new SecondFactorType('sms')));
     }
+
+    /**
+     * @test
+     */
+    public function they_can_be_compared()
+    {
+        $this->assertTrue((new SecondFactorType('yubikey'))->hasEqualOrHigherLoaComparedTo(new SecondFactorType('sms')));
+        $this->assertTrue((new SecondFactorType('sms'))->hasEqualOrHigherLoaComparedTo(new SecondFactorType('sms')));
+        $this->assertFalse((new SecondFactorType('sms'))->hasEqualOrLowerLoaComparedTo(new SecondFactorType('yubikey')));
+        $this->assertTrue((new SecondFactorType('sms'))->hasEqualOrLowerLoaComparedTo(new SecondFactorType('sms')));
+    }
 }
