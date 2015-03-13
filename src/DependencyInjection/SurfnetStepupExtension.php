@@ -41,8 +41,11 @@ class SurfnetStepupExtension extends Extension
         );
         $loader->load('services.yml');
 
-        $this->defineLoas($config['loa_definition'], $container);
-
+        if (isset($config['loa_definition'])) {
+            $this->defineLoas($config['loa_definition'], $container);
+        } else {
+            $container->removeDefinition('surfnet_stepup.service.loa_resolution');
+        }
     }
 
     private function defineLoas(array $loaDefinitions, ContainerBuilder $container)
