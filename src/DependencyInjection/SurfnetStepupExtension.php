@@ -18,9 +18,11 @@
 
 namespace Surfnet\StepupBundle\DependencyInjection;
 
+use Surfnet\StepupBundle\Value\Loa;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -38,5 +40,19 @@ class SurfnetStepupExtension extends Extension
             new FileLocator(__DIR__ . '/../Resources/config')
         );
         $loader->load('services.yml');
+
+        $this->defineLoas($config['loa_definition'], $container);
+
+    }
+
+    private function defineLoas(array $loaDefinitions, ContainerBuilder $container)
+    {
+        $loaService = $container->getDefinition('surfnet_stepup.service.loa_resolution');
+
+        $loa1 = new Definition('Surfnet\StepupBundle\Value\Loa', [Loa::LOA_1, $loaDefinitions['loa1']]);
+        $loa2 = new Definition('Surfnet\StepupBundle\Value\Loa', [Loa::LOA_2, $loaDefinitions['loa2']]);
+        $loa3 = new Definition('Surfnet\StepupBundle\Value\Loa', [Loa::LOA_3, $loaDefinitions['loa3']]);
+
+        $loaService->addArgument([$loa1, $loa2, $loa3]);
     }
 }
