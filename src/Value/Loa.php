@@ -88,6 +88,15 @@ class Loa
     }
 
     /**
+     * @param int $level
+     * @return bool
+     */
+    public function levelIsHigherOrEqualTo($level)
+    {
+        return $this->level >= $level;
+    }
+
+    /**
      * @param Loa $loa
      * @return bool
      */

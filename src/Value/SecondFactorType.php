@@ -68,6 +68,17 @@ final class SecondFactorType
     }
 
     /**
+     * @param Loa $loa
+     * @return bool
+     */
+    public function isSatisfiedBy(Loa $loa)
+    {
+        $level = self::$loaLevelTypeMap[$this->type];
+
+        return $loa->levelIsHigherOrEqualTo($level);
+    }
+
+    /**
      * @param SecondFactorType $other
      * @return bool
      */
