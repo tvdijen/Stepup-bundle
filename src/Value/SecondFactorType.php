@@ -18,8 +18,8 @@
 
 namespace Surfnet\StepupBundle\Value;
 
-use Surfnet\SamlBundle\Exception\InvalidArgumentException;
 use Surfnet\StepupBundle\Exception\DomainException;
+use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 
 final class SecondFactorType
 {
@@ -65,5 +65,22 @@ final class SecondFactorType
         $level = self::$loaLevelTypeMap[$this->type];
 
         return $loa->levelIsLowerOrEqualTo($level);
+    }
+
+    /**
+     * @param SecondFactorType $other
+     * @return bool
+     */
+    public function equals(SecondFactorType $other)
+    {
+        return $this->type === $other->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->type;
     }
 }
