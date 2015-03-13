@@ -69,3 +69,6 @@ services:
         class: Surfnet\StepupBundle\EventListener\CannotWriteToPrimaryLogExceptionExceptionListener
         tags:
             - { name: kernel.event_subscriber }
+
+    surfnet_stepup.service.loa_resolution:
+        class: Surfnet\StepupBundle\Service\LoaResolutionService
