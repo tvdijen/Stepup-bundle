@@ -48,6 +48,6 @@ class Art
      */
     private static function calculateArt($className, $message)
     {
-        return $art = substr(abs(crc32(md5($className . $message))), 0, 4);
+        return substr(abs(crc32(md5($className . $message))), 0, 4);
     }
 }
