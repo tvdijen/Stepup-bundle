@@ -20,10 +20,10 @@ namespace Surfnet\StepupBundle\Value\Exception;
 
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 
-class UnknownCountryCodeException extends InvalidArgumentException
+class InvalidCountryCodeFormatException extends InvalidArgumentException
 {
-    public static function unknownCountryCode($code)
+    public function __construct($invalidCode)
     {
-        return new self(sprintf('Unknown CountryCode "%s"', $code));
+        parent::__construct(sprintf('A CountryCode may only contain digits, "%s" given', $invalidCode));
     }
 }

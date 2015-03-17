@@ -18,6 +18,8 @@
 
 namespace Surfnet\StepupBundle\Value\PhoneNumber;
 
+use Surfnet\StepupBundle\Value\Exception\InvalidPhoneNumberFormatException;
+
 class InternationalPhoneNumber
 {
     /**
@@ -36,6 +38,25 @@ class InternationalPhoneNumber
     }
 
     /**
+     * @param string $string a well formatted "+{CountryCode} (0) {PhoneNumber}" international phone number
+     * @return InternationalPhoneNumber
+     */
+    public static function fromStringFormat($string)
+    {
+        if (!preg_match('~\+([^\(]+)\(0\)\s{1}([\d]+)~', $string, $matches)) {
+            throw new InvalidPhoneNumberFormatException(
+                'In order to create the phone number from string, it must have the format "+31 (0) 614696076", formal: '
+                . '"+{CountryCode} (0) {PhoneNumber}"'
+            );
+        }
+
+        $countryCode = str_replace(' ', '', $matches[1]);
+        $phoneNumber = $matches[2];
+
+        return new self(new CountryCode($countryCode), new PhoneNumber($phoneNumber));
+    }
+
+    /**
      * @see http://en.wikipedia.org/wiki/MSISDN#MSISDN_Format
      * @see https://www.messagebird.com/developers#messaging-send
      *
@@ -46,6 +67,10 @@ class InternationalPhoneNumber
         return $this->countryCode->getCountryCode() . $this->phoneNumber->formatAsMsisdnPart();
     }
 
+    /**
+     * @param InternationalPhoneNumber $other
+     * @return bool
+     */
     public function equals(InternationalPhoneNumber $other)
     {
         return $this->countryCode->equals($other->countryCode)

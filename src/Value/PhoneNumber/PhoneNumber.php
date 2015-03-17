@@ -19,7 +19,7 @@
 namespace Surfnet\StepupBundle\Value\PhoneNumber;
 
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
-use Surfnet\StepupBundle\Value\Exception\InvalidPhoneNumberFormat;
+use Surfnet\StepupBundle\Value\Exception\InvalidPhoneNumberFormatException;
 
 class PhoneNumber
 {
@@ -38,7 +38,7 @@ class PhoneNumber
         }
 
         if (!preg_match('~^\d+$~', $number)) {
-            throw new InvalidPhoneNumberFormat($number);
+            throw new InvalidPhoneNumberFormatException($number);
         }
 
         $this->number = $number;

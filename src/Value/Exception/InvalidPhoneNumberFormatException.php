@@ -20,7 +20,7 @@ namespace Surfnet\StepupBundle\Value\Exception;
 
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 
-class InvalidPhoneNumberFormat extends InvalidArgumentException
+class InvalidPhoneNumberFormatException extends InvalidArgumentException
 {
     public function __construct($invalidFormat)
     {

@@ -31,11 +31,25 @@ class CountryCodeTest extends UnitTest
      *
      * @expectedException \Surfnet\StepupBundle\Exception\InvalidArgumentException
      *
-     * @param mixed $argument
+     * @param mixed $invalidArgument
      */
-    public function a_country_code_cannot_be_constructed_with_anything_but_a_string($argument)
+    public function a_country_code_cannot_be_constructed_with_anything_but_a_string($invalidArgument)
     {
-        new CountryCode($argument);
+        new CountryCode($invalidArgument);
+    }
+
+    /**
+     * @test
+     * @group        value
+     * @dataProvider invalidStringArgumentProvider
+     *
+     * @expectedException \Surfnet\StepupBundle\Exception\InvalidArgumentException
+     *
+     * @param string $invalidArgument
+     */
+    public function a_phone_number_can_only_be_created_if_the_string_contains_digits_only($invalidArgument)
+    {
+        new CountryCode($invalidArgument);
     }
 
     /**
@@ -44,46 +58,32 @@ class CountryCodeTest extends UnitTest
      *
      * @expectedException \Surfnet\StepupBundle\Value\Exception\UnknownCountryCodeException
      */
-    public function a_country_code_cannot_be_created_with_a_non_existant_definition()
+    public function a_country_code_cannot_be_created_with_a_country_code_that_does_not_exist()
     {
-        new CountryCode('this definition does not exist');
+        new CountryCode('99999');
     }
 
     /**
      * @test
      * @group value
      */
-    public function the_country_code_returns_the_definition_upon_request()
+    public function the_country_code_returns_the_country_code_upon_request()
     {
-        $definition = 'Turks and Caicos Islands (+1 649)';
+        $definition = '1649';
         $countryCode = new CountryCode($definition);
 
-        $this->assertEquals($definition, $countryCode->getCountryCodeDefinition());
+        $this->assertEquals($definition, $countryCode->getCountryCode());
     }
 
     /**
      * @test
      * @group value
      */
-    public function the_country_code_returns_the_corresponding_unformatted_country_code_upon_request()
+    public function country_codes_are_equal_when_the_given_country_code_is_equal()
     {
-        $definition = 'Solomon Islands (+677)';
-        $code = 677;
-
-        $countryCode = new CountryCode($definition);
-
-        $this->assertEquals($code, $countryCode->getCountryCode());
-    }
-
-    /**
-     * @test
-     * @group value
-     */
-    public function country_codes_are_compared_by_definition()
-    {
-        $base = new CountryCode('Puerto Rico (+1 787)');
-        $same = new CountryCode('Puerto Rico (+1 787)');
-        $different = new CountryCode('Puerto Rico (+1 939)');
+        $base      = new CountryCode('1787');
+        $same      = new CountryCode('1787');
+        $different = new CountryCode('1939');
 
         $this->assertTrue($base->equals($same), 'Country codes with the same definition should be equal');
         $this->assertFalse($base->equals($different), 'Country codes with a different definition should not be equal');
@@ -118,12 +118,23 @@ class CountryCodeTest extends UnitTest
     public function toStringProvider()
     {
         return [
-            '4 digits'      => ['Puerto Rico (+1 787)', '+1 787'],
-            '3 digits'      => ['Micronesia (+691)', '+691'],
-            '2 digits'      => ['Netherlands (+31)', '+31'],
-            '1 digit'       => ['Canada (+1)', '+1'],
-            'Kazakhstan 76' => ['Kazakhstan (+76)', '+7 6'],
-            'Kazakhstan 77' => ['Kazakhstan (+77)', '+7 7']
+            '4 digits'      => ['1787', '+1 787'],
+            '3 digits'      => ['691', '+691'],
+            '2 digits'      => ['31', '+31'],
+            '1 digit'       => ['1', '+1'],
+            'Kazakhstan 76' => ['76', '+7 6'],
+            'Kazakhstan 77' => ['77', '+7 7']
+        ];
+    }
+
+    public function invalidStringArgumentProvider()
+    {
+        return [
+            'with characters'     => ['3AB8'],
+            'with symbols'        => ['2!2'],
+            'with spaces'         => ['1 3'],
+            'with leading space'  => [' 31'],
+            'with trailing space' => ['31 '],
         ];
     }
 }

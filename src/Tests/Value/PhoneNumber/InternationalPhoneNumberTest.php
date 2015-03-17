@@ -31,12 +31,12 @@ class InternationalPhoneNumberTest extends UnitTest
      */
     public function equality_is_based_on_country_code_and_phone_number_contents()
     {
-        $base         = new InternationalPhoneNumber(new CountryCode('Netherlands (+31)'), new PhoneNumber('123'));
+        $base         = new InternationalPhoneNumber(new CountryCode('31'), new PhoneNumber('123'));
 
-        $same         = new InternationalPhoneNumber(new CountryCode('Netherlands (+31)'), new PhoneNumber('123'));
-        $otherCountry = new InternationalPhoneNumber(new CountryCode('Belgium (+32)'),     new PhoneNumber('123'));
-        $otherNumber  = new InternationalPhoneNumber(new CountryCode('Netherlands (+31)'), new PhoneNumber('456'));
-        $different    = new InternationalPhoneNumber(new CountryCode('Belgium (+32)'),     new PhoneNumber('456'));
+        $same         = new InternationalPhoneNumber(new CountryCode('31'), new PhoneNumber('123'));
+        $otherCountry = new InternationalPhoneNumber(new CountryCode('32'), new PhoneNumber('123'));
+        $otherNumber  = new InternationalPhoneNumber(new CountryCode('31'), new PhoneNumber('456'));
+        $different    = new InternationalPhoneNumber(new CountryCode('32'), new PhoneNumber('456'));
 
         $this->assertTrue($base->equals($same));
 
@@ -49,12 +49,25 @@ class InternationalPhoneNumberTest extends UnitTest
      * @test
      * @group value
      */
+    public function it_can_be_cast_to_string_and_recreated_equally_from_that_string()
+    {
+        $phoneNumber = new InternationalPhoneNumber(new CountryCode('1808'), new PhoneNumber('0612345678'));
+        $expectedString = '+1 808 (0) 612345678';
+
+        $asString = (string) $phoneNumber;
+        $this->assertEquals($expectedString, $asString);
+
+        $phoneNumberFromString = InternationalPhoneNumber::fromStringFormat($asString);
+        $this->assertTrue($phoneNumber->equals($phoneNumberFromString));
+    }
+
+    /**
+     * @test
+     * @group value
+     */
     public function msisdn_representation_is_formatted_correctly_as_a_continuous_string_of_digits()
     {
-        $phoneNumber = new InternationalPhoneNumber(
-            new CountryCode('Netherlands (+31)'),
-            new PhoneNumber('0612345678')
-        );
+        $phoneNumber = new InternationalPhoneNumber(new CountryCode('31'), new PhoneNumber('0612345678'));
 
         $this->assertEquals('31612345678', $phoneNumber->toMSISDN());
     }

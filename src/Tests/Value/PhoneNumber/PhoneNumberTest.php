@@ -43,7 +43,7 @@ class PhoneNumberTest extends UnitTest
      * @group value
      * @dataProvider invalidStringArgumentProvider
      *
-     * @expectedException \Surfnet\StepupBundle\Value\Exception\InvalidPhoneNumberFormat
+     * @expectedException \Surfnet\StepupBundle\Value\Exception\InvalidPhoneNumberFormatException
      *
      * @param string $invalidArgument
      */
