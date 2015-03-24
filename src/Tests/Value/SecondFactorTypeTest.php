@@ -34,7 +34,9 @@ final class SecondFactorTypeTest extends TestCase
 
     /**
      * @test
+     * @group value
      * @dataProvider validTypes
+     *
      * @param string $type
      */
     public function it_can_be_constructed($type)
@@ -44,6 +46,8 @@ final class SecondFactorTypeTest extends TestCase
 
     /**
      * @test
+     * @group value
+     *
      * @expectedException \Surfnet\StepupBundle\Exception\InvalidArgumentException
      */
     public function it_doesnt_accept_integers()
@@ -53,6 +57,8 @@ final class SecondFactorTypeTest extends TestCase
 
     /**
      * @test
+     * @group value
+     *
      * @expectedException \Surfnet\StepupBundle\Exception\DomainException
      */
     public function it_doesnt_accept_an_invalid_type()
