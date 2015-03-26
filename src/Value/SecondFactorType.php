@@ -75,7 +75,7 @@ final class SecondFactorType
     }
 
     /**
-     * @param SecondFactorType $other
+     * @param self $other
      * @return bool
      */
     public function hasEqualOrHigherLoaComparedTo(self $other)
@@ -84,7 +84,7 @@ final class SecondFactorType
     }
 
     /**
-     * @param SecondFactorType $other
+     * @param self $other
      * @return bool
      */
     public function hasEqualOrLowerLoaComparedTo(self $other)
@@ -93,10 +93,10 @@ final class SecondFactorType
     }
 
     /**
-     * @param SecondFactorType $other
+     * @param self $other
      * @return bool
      */
-    public function equals(SecondFactorType $other)
+    public function equals(self $other)
     {
         return $this->type === $other->type;
     }
