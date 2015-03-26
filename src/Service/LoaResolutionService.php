@@ -67,7 +67,7 @@ class LoaResolutionService
 
     /**
      * @param int $loaLevel
-     * @return null
+     * @return null|Loa
      */
     public function getLoaByLevel($loaLevel)
     {
