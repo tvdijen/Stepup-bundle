@@ -24,9 +24,9 @@ use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 final class SecondFactorType
 {
     private static $loaLevelTypeMap = [
-        'sms' => 2,
-        'tiqr' => 2,
-        'yubikey' => 3,
+        'sms'     => Loa::LOA_2,
+        'tiqr'    => Loa::LOA_2,
+        'yubikey' => Loa::LOA_3,
     ];
 
     /**
@@ -102,18 +102,18 @@ final class SecondFactorType
     }
 
     /**
+     * @return int
+     */
+    public function getLevel()
+    {
+        return self::$loaLevelTypeMap[$this->type];
+    }
+
+    /**
      * @return string
      */
     public function __toString()
     {
         return $this->type;
-    }
-
-    /**
-     * @return int
-     */
-    private function getLevel()
-    {
-        return self::$loaLevelTypeMap[$this->type];
     }
 }
