@@ -66,6 +66,21 @@ class LoaResolutionService
     }
 
     /**
+     * @param int $loaLevel
+     * @return null
+     */
+    public function getLoaByLevel($loaLevel)
+    {
+        foreach ($this->loas as $loa) {
+            if ($loa->isOfLevel($loaLevel)) {
+                return $loa;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param Loa $loa
      */
     private function addLoaDefinition(Loa $loa)

@@ -18,8 +18,8 @@
 
 namespace Surfnet\StepupBundle\Value;
 
-use DomainException;
-use InvalidArgumentException;
+use Surfnet\StepupBundle\Exception\DomainException;
+use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 
 /**
  * Value object representing the different LOAs that can be configured
@@ -50,19 +50,16 @@ class Loa
     public function __construct($level, $identifier)
     {
         $possibleLevels = [self::LOA_1, self::LOA_2, self::LOA_3];
-        if (!in_array($level, $possibleLevels)) {
+        if (!in_array($level, $possibleLevels, true)) {
             throw new DomainException(sprintf(
                 'Unknown loa level "%s", known levels: "%s"',
-                $level,
+                is_object($level) ? get_class($level) : $level,
                 implode('", "', $possibleLevels)
             ));
         }
 
         if (!is_string($identifier)) {
-            throw new InvalidArgumentException(sprintf(
-                'Loa identifier must be a string, "%s" given',
-                is_object($identifier) ? get_class($identifier) : gettype($identifier)
-            ));
+            throw InvalidArgumentException::invalidType('string', 'identifier', $identifier);
         }
 
         $this->level = $level;
@@ -102,7 +99,7 @@ class Loa
      */
     public function canSatisfyLoa(Loa $loa)
     {
-        return $this->level >= $loa->level;
+        return $loa->levelIsLowerOrEqualTo($this->level);
     }
 
     /**
@@ -113,6 +110,15 @@ class Loa
     {
         return $this->level === $loa->level
             && $this->identifier === $loa->identifier;
+    }
+
+    /**
+     * @param int $loaLevel
+     * @return bool
+     */
+    public function isOfLevel($loaLevel)
+    {
+        return $this->level === $loaLevel;
     }
 
     public function __toString()
