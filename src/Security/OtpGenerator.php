@@ -18,6 +18,7 @@
 
 namespace Surfnet\StepupBundle\Security;
 
+use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 use Surfnet\StepupBundle\Exception\LogicException;
 use Surfnet\StepupBundle\Security\Exception\OtpGenerationRuntimeException;
 
@@ -41,14 +42,18 @@ final class OtpGenerator
      * Securely generate a 8-character OTP containing only characters from the OtpGenerator::ALPHABET constant.
      * Based on https://gist.github.com/pmeulen/3dff8bab3227ed340dd1
      *
+     * @param int $length The length of the OTP to generate
      * @return string
      * @throws OtpGenerationRuntimeException
      */
-    public static function generate()
+    public static function generate($length)
     {
-        $passwordLength = 8; // The length of the password to generate
+        if (!is_int($length)) {
+            throw InvalidArgumentException::invalidType('int', 'length', $length);
+        }
+
         $bitsPerValue = self::BITS_PER_CHARACTER;
-        $randomBytesRequired = (int) (($passwordLength * $bitsPerValue) / 8) + 1;
+        $randomBytesRequired = (int) (($length * $bitsPerValue) / 8) + 1;
         $cryptoStrong = false;
         $randomBytes = openssl_random_pseudo_bytes($randomBytesRequired, $cryptoStrong); // Generate random bytes
 
@@ -76,7 +81,7 @@ final class OtpGenerator
         // Get 'bits' form $random_bits string in blocks of 5 bits, convert bits to value [0..32> and use
         // this as offset in self::ALPHABET to pick the character
         $password = '';
-        for ($i = 0; $i < $passwordLength; ++$i) {
+        for ($i = 0; $i < $length; ++$i) {
             $randomValueBin = substr($randomBits, $i * $bitsPerValue, $bitsPerValue);
 
             if (strlen($randomValueBin) < $bitsPerValue) {
