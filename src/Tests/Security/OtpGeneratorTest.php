@@ -33,4 +33,31 @@ final class OtpGeneratorTest extends TestCase
         $this->assertInternalType('string', $otp);
         $this->assertSame(8, strlen($otp), 'OTP is not eight characters long');
     }
+
+    public function nonPositiveIntegers()
+    {
+        return [
+            'null' => [null],
+            'false' => [false],
+            'true' => [true],
+            'string' => ['8'],
+            'object' => [new \stdClass()],
+            'array' => [['foo', 'bar']],
+            'negative integer' => [-1],
+            'zero' => [0],
+        ];
+    }
+
+    /**
+     * @test
+     * @group security
+     * @dataProvider nonPositiveIntegers
+     * @expectedException \Surfnet\StepupBundle\Exception\InvalidArgumentException
+     *
+     * @param mixed $length
+     */
+    public function it_cannot_generate_otp_strings_of_negative_or_non_integer_length($length)
+    {
+        OtpGenerator::generate($length);
+    }
 }

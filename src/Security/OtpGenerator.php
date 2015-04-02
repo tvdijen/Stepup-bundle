@@ -51,6 +51,10 @@ final class OtpGenerator
             throw InvalidArgumentException::invalidType('int', 'length', $length);
         }
 
+        if ($length <= 0) {
+            throw new InvalidArgumentException('Expected positive integer $length');
+        }
+
         $bitsPerValue = self::BITS_PER_CHARACTER;
         $randomBytesRequired = (int) (($length * $bitsPerValue) / 8) + 1;
         $cryptoStrong = false;
