@@ -33,15 +33,4 @@ final class OtpGeneratorTest extends TestCase
         $this->assertInternalType('string', $otp);
         $this->assertSame(8, strlen($otp), 'OTP is not eight characters long');
     }
-
-    /**
-     * @test
-     * @group security
-     */
-    public function it_only_uses_the_fixed_alphabet()
-    {
-        for ($i = 0; $i < 100; $i++) {
-            $this->assertSame('', str_replace(str_split(OtpGenerator::CHARACTER_SET), '', OtpGenerator::generate(8)));
-        }
-    }
 }
