@@ -41,7 +41,7 @@ final class OtpGeneratorTest extends TestCase
     public function it_only_uses_the_fixed_alphabet()
     {
         for ($i = 0; $i < 100; $i++) {
-            $this->assertSame('', str_replace(str_split(OtpGenerator::ALPHABET), '', OtpGenerator::generate(8)));
+            $this->assertSame('', str_replace(str_split(OtpGenerator::CHARACTER_SET), '', OtpGenerator::generate(8)));
         }
     }
 }

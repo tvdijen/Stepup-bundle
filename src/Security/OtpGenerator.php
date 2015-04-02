@@ -30,7 +30,7 @@ final class OtpGenerator
      * The characters used in the OTP. Must be a power of two characters long to ensure all characters have equal chance
      * of being included.
      */
-    const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const CHARACTER_SET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
     /**
      * The 32 possible characters in the Base32 alphabet can be represented in exactly 5 bits
@@ -38,7 +38,7 @@ final class OtpGenerator
     const BITS_PER_CHARACTER = 5;
 
     /**
-     * Securely generate a 8-character OTP containing only characters from the OtpGenerator::ALPHABET constant.
+     * Securely generate a 8-character OTP containing only characters from the OtpGenerator::CHARACTER_SET constant.
      * Based on https://gist.github.com/pmeulen/3dff8bab3227ed340dd1
      *
      * @param int $length The length of the OTP to generate
@@ -74,12 +74,12 @@ final class OtpGenerator
         }
 
         // Get 'bits' form $random_bits string in blocks of 5 bits, convert bits to value [0..32> and use
-        // this as offset in self::ALPHABET to pick the character
+        // this as offset in self::CHARACTER_SET to pick the character
         $password = '';
         for ($i = 0; $i < $length; ++$i) {
             $randomValueBin = substr($randomBits, $i * $bitsPerValue, $bitsPerValue);
 
-            $password .= substr(self::ALPHABET, bindec($randomValueBin), 1);
+            $password .= substr(self::CHARACTER_SET, bindec($randomValueBin), 1);
         }
 
         return $password;
