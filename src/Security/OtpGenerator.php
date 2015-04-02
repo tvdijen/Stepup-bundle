@@ -19,7 +19,6 @@
 namespace Surfnet\StepupBundle\Security;
 
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
-use Surfnet\StepupBundle\Exception\LogicException;
 use Surfnet\StepupBundle\Security\Exception\OtpGenerationRuntimeException;
 
 /**
@@ -65,10 +64,6 @@ final class OtpGenerator
             throw new OtpGenerationRuntimeException('openssl_random_pseudo_bytes() failed');
         }
 
-        if (strlen($randomBytes) < $randomBytesRequired) {
-            throw new LogicException('Logic error');
-        }
-
         // Transform each byte $random_bytes into $random_bits where each byte
         // is converted to its 8 character ASCII binary representation.
         // This allows us to work with the individual bits using the php string functions
@@ -83,10 +78,6 @@ final class OtpGenerator
         $password = '';
         for ($i = 0; $i < $length; ++$i) {
             $randomValueBin = substr($randomBits, $i * $bitsPerValue, $bitsPerValue);
-
-            if (strlen($randomValueBin) < $bitsPerValue) {
-                throw new LogicException('Logic error');
-            }
 
             $password .= substr(self::ALPHABET, bindec($randomValueBin), 1);
         }
