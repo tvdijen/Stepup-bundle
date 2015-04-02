@@ -56,7 +56,7 @@ final class OtpGenerator
         }
 
         $bitsPerValue = self::BITS_PER_CHARACTER;
-        $randomBytesRequired = (int) (($length * $bitsPerValue) / 8) + 1;
+        $randomBytesRequired = (int) ceil($length * $bitsPerValue / 8);
         $cryptoStrong = false;
         $randomBytes = openssl_random_pseudo_bytes($randomBytesRequired, $cryptoStrong); // Generate random bytes
 
