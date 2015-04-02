@@ -69,14 +69,14 @@ final class OtpGenerator
         // This allows us to work with the individual bits using the php string functions
         // Not very efficient, but easy to understand.
         $randomBits = '';
-        for ($i = 0; $i < $randomBytesRequired; ++$i) {
+        for ($i = 0; $i < $randomBytesRequired; $i++) {
             $randomBits .= str_pad(decbin(ord($randomBytes[$i])), 8, '0', STR_PAD_LEFT);
         }
 
         // Get 'bits' form $random_bits string in blocks of 5 bits, convert bits to value [0..32> and use
         // this as offset in self::CHARACTER_SET to pick the character
         $password = '';
-        for ($i = 0; $i < $length; ++$i) {
+        for ($i = 0; $i < $length; $i++) {
             $randomValueBin = substr($randomBits, $i * $bitsPerValue, $bitsPerValue);
 
             $password .= substr(self::CHARACTER_SET, bindec($randomValueBin), 1);
