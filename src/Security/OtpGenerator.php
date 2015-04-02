@@ -33,6 +33,11 @@ final class OtpGenerator
     const ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
     /**
+     * The 32 possible characters in the Base32 alphabet can be represented in exactly 5 bits
+     */
+    const BITS_PER_CHARACTER = 5;
+
+    /**
      * Securely generate a 8-character OTP containing only characters from the OtpGenerator::ALPHABET constant.
      * Based on https://gist.github.com/pmeulen/3dff8bab3227ed340dd1
      *
@@ -42,7 +47,7 @@ final class OtpGenerator
     public static function generate()
     {
         $passwordLength = 8; // The length of the password to generate
-        $bitsPerValue = 5;  // The 32 possible characters in the Base32 alphabet can be represented in exactly 5 bits
+        $bitsPerValue = self::BITS_PER_CHARACTER;
         $randomBytesRequired = (int) (($passwordLength * $bitsPerValue) / 8) + 1;
         $cryptoStrong = false;
         $randomBytes = openssl_random_pseudo_bytes($randomBytesRequired, $cryptoStrong); // Generate random bytes
