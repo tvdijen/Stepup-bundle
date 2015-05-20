@@ -85,7 +85,6 @@ services:
         arguments:
             - @surfnet_stepup.service.sms
             - @surfnet_stepup.service.challenge_handler
-            - @translator
             - '' # Originator set in extension
 
     surfnet_stepup.service.challenge_handler:

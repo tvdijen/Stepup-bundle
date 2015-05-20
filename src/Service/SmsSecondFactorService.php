@@ -24,7 +24,6 @@ use Surfnet\StepupBundle\Command\VerifyPhoneNumberCommand;
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 use Surfnet\StepupBundle\Service\SmsSecondFactor\OtpVerification;
 use Surfnet\StepupBundle\Service\SmsSecondFactor\SmsVerificationStateHandler;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class SmsSecondFactorService
 {
@@ -39,25 +38,18 @@ class SmsSecondFactorService
     private $smsVerificationStateHandler;
 
     /**
-     * @var \Symfony\Component\Translation\TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var string
      */
     private $originator;
 
     /**
-     * @param SmsService $smsService
+     * @param SmsService                  $smsService
      * @param SmsVerificationStateHandler $smsVerificationStateHandler
-     * @param TranslatorInterface $translator
-     * @param string $originator
+     * @param string                      $originator
      */
     public function __construct(
         SmsService $smsService,
         SmsVerificationStateHandler $smsVerificationStateHandler,
-        TranslatorInterface $translator,
         $originator
     ) {
         if (!is_string($originator)) {
@@ -72,7 +64,6 @@ class SmsSecondFactorService
 
         $this->smsService = $smsService;
         $this->smsVerificationStateHandler = $smsVerificationStateHandler;
-        $this->translator = $translator;
         $this->originator = $originator;
     }
 
@@ -105,12 +96,10 @@ class SmsSecondFactorService
     {
         $challenge = $this->smsVerificationStateHandler->requestNewOtp($command->phoneNumber);
 
-        $body = $this->translator->trans('stepup.sms.challenge_body', ['%challenge%' => $challenge]);
-
         $smsCommand = new SendSmsCommand();
         $smsCommand->recipient = $command->phoneNumber->toMSISDN();
         $smsCommand->originator = $this->originator;
-        $smsCommand->body = $body;
+        $smsCommand->body = str_replace('%challenge%', $challenge, $command->body);
         $smsCommand->identity = $command->identity;
         $smsCommand->institution = $command->institution;
 

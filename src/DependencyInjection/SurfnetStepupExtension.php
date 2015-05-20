@@ -48,7 +48,7 @@ class SurfnetStepupExtension extends Extension
         }
 
         $smsSecondFactorService = $container->getDefinition('surfnet_stepup.service.sms_second_factor');
-        $smsSecondFactorService->replaceArgument(3, $config['sms']['originator']);
+        $smsSecondFactorService->replaceArgument(2, $config['sms']['originator']);
 
         $container
             ->getDefinition('surfnet_stepup.service.challenge_handler')

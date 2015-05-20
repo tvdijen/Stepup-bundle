@@ -29,6 +29,11 @@ class SendSmsChallengeCommand
     public $phoneNumber;
 
     /**
+     * @var string The SMS contents. '%challenge%' will be replaced with the generated OTP.
+     */
+    public $body;
+
+    /**
      * The requesting identity's ID (not name ID).
      *
      * @var string
