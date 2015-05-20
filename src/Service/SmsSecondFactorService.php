@@ -108,7 +108,7 @@ class SmsSecondFactorService
         $body = $this->translator->trans('stepup.sms.challenge_body', ['%challenge%' => $challenge]);
 
         $smsCommand = new SendSmsCommand();
-        $smsCommand->recipient = $command->phoneNumber;
+        $smsCommand->recipient = $command->phoneNumber->toMSISDN();
         $smsCommand->originator = $this->originator;
         $smsCommand->body = $body;
         $smsCommand->identity = $command->identity;

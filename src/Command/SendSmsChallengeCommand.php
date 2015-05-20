@@ -18,12 +18,13 @@
 
 namespace Surfnet\StepupBundle\Command;
 
+use Surfnet\StepupBundle\Value\PhoneNumber\InternationalPhoneNumber;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SendSmsChallengeCommand
 {
     /**
-     * @var string
+     * @var InternationalPhoneNumber
      */
     public $phoneNumber;
 
