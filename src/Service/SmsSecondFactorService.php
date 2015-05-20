@@ -83,6 +83,14 @@ class SmsSecondFactorService
         return $this->smsVerificationStateHandler->getMaximumOtpRequestsCount();
     }
 
+    /**
+     * @return bool
+     */
+    public function hasSmsVerificationState()
+    {
+        return $this->smsVerificationStateHandler->hasState();
+    }
+
     public function clearSmsVerificationState()
     {
         $this->smsVerificationStateHandler->clearState();
