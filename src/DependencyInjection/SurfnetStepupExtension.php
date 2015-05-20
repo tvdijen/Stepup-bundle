@@ -46,6 +46,14 @@ class SurfnetStepupExtension extends Extension
         } else {
             $container->removeDefinition('surfnet_stepup.service.loa_resolution');
         }
+
+        $smsSecondFactorService = $container->getDefinition('surfnet_stepup.service.sms_second_factor');
+        $smsSecondFactorService->replaceArgument(3, $config['sms']['originator']);
+
+        $container
+            ->getDefinition('surfnet_stepup.service.challenge_handler')
+            ->replaceArgument(2, $config['sms']['otp_expiry_interval'])
+            ->replaceArgument(3, $config['sms']['maximum_otp_requests']);
     }
 
     private function defineLoas(array $loaDefinitions, ContainerBuilder $container)
