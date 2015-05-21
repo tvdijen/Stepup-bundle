@@ -19,8 +19,8 @@
 namespace Surfnet\StepupBundle\Service\SmsSecondFactor;
 
 use DateInterval;
-use Surfnet\StepupBundle\Security\OtpGenerator;
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
+use Surfnet\StepupBundle\Security\OtpGenerator;
 use Surfnet\StepupBundle\Service\Exception\TooManyChallengesRequestedException;
 
 final class SmsVerificationState

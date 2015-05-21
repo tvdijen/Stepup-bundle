@@ -18,8 +18,8 @@
 
 namespace Surfnet\StepupBundle\Tests\Value\PhoneNumber;
 
-use stdClass;
 use PHPUnit_Framework_TestCase as UnitTest;
+use stdClass;
 use Surfnet\StepupBundle\Value\PhoneNumber\CountryCode;
 
 class CountryCodeTest extends UnitTest
