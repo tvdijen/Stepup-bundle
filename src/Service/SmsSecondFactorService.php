@@ -102,7 +102,7 @@ class SmsSecondFactorService
      */
     public function sendChallenge(SendSmsChallengeCommand $command)
     {
-        $challenge = $this->smsVerificationStateHandler->requestNewOtp($command->phoneNumber);
+        $challenge = $this->smsVerificationStateHandler->requestNewOtp((string) $command->phoneNumber);
 
         $smsCommand = new SendSmsCommand();
         $smsCommand->recipient = $command->phoneNumber->toMSISDN();
