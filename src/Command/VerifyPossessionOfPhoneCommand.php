@@ -20,18 +20,13 @@ namespace Surfnet\StepupBundle\Command;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class VerifyPhoneNumberCommand
+class VerifyPossessionOfPhoneCommand
 {
     /**
-     * @Assert\NotBlank(message="stepup.verify_phone_number_command.challenge.may_not_be_empty")
-     * @Assert\Type(type="string", message="stepup.verify_phone_number_command.challenge.must_be_string")
+     * @Assert\NotBlank(message="stepup.verify_possession_of_phone_command.challenge.may_not_be_empty")
+     * @Assert\Type(type="string", message="stepup.verify_possession_of_phone_command.challenge.must_be_string")
      *
      * @var string
      */
     public $challenge;
-
-    /**
-     * @var string
-     */
-    public $phoneNumber;
 }

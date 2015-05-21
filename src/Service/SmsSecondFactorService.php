@@ -20,7 +20,7 @@ namespace Surfnet\StepupBundle\Service;
 
 use Surfnet\StepupBundle\Command\SendSmsChallengeCommand;
 use Surfnet\StepupBundle\Command\SendSmsCommand;
-use Surfnet\StepupBundle\Command\VerifyPhoneNumberCommand;
+use Surfnet\StepupBundle\Command\VerifyPossessionOfPhoneCommand;
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 use Surfnet\StepupBundle\Service\SmsSecondFactor\OtpVerification;
 use Surfnet\StepupBundle\Service\SmsSecondFactor\SmsVerificationStateHandler;
@@ -115,10 +115,10 @@ class SmsSecondFactorService
     }
 
     /**
-     * @param VerifyPhoneNumberCommand $command
+     * @param VerifyPossessionOfPhoneCommand $command
      * @return OtpVerification
      */
-    public function verifyPossession(VerifyPhoneNumberCommand $command)
+    public function verifyPossession(VerifyPossessionOfPhoneCommand $command)
     {
         return $this->smsVerificationStateHandler->verify($command->challenge);
     }
