@@ -54,6 +54,23 @@ class SurfnetStepupExtension extends Extension
             ->getDefinition('surfnet_stepup.service.challenge_handler')
             ->replaceArgument(2, $config['sms']['otp_expiry_interval'])
             ->replaceArgument(3, $config['sms']['maximum_otp_requests']);
+
+        $gatewayGuzzleOptions = [
+            'base_url' => $config['gateway_api']['url'],
+            'defaults' => [
+                'auth' => [
+                    $config['gateway_api']['credentials']['username'],
+                    $config['gateway_api']['credentials']['password'],
+                    'basic'
+                ],
+                'headers' => [
+                    'Accept' => 'application/json'
+                ]
+            ]
+        ];
+
+        $gatewayGuzzle = $container->getDefinition('surfnet_stepup.guzzle.gateway_api');
+        $gatewayGuzzle->replaceArgument(0, $gatewayGuzzleOptions);
     }
 
     private function defineLoas(array $loaDefinitions, ContainerBuilder $container)

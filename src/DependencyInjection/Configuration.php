@@ -85,9 +85,63 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
 
+        $this->createGatewayApiConfiguration($rootNode);
         $this->createSmsConfiguration($rootNode);
 
         return $treeBuilder;
+    }
+
+    private function createGatewayApiConfiguration(ArrayNodeDefinition $root)
+    {
+        $root
+            ->children()
+                ->arrayNode('gateway_api')
+                    ->info('Gateway API configuration')
+                    ->children()
+                        ->arrayNode('credentials')
+                            ->info('Basic authentication credentials')
+                            ->children()
+                                ->scalarNode('username')
+                                    ->info('Username for the Gateway API')
+                                    ->isRequired()
+                                    ->validate()
+                                        ->ifTrue(function ($value) {
+                                            return (!is_string($value) || empty($value));
+                                        })
+                                        ->thenInvalid(
+                                            'Invalid Gateway API username specified: "%s". Must be non-empty string'
+                                        )
+                                    ->end()
+                                ->end()
+                                ->scalarNode('password')
+                                    ->info('Password for the Gateway API')
+                                    ->isRequired()
+                                    ->validate()
+                                        ->ifTrue(function ($value) {
+                                            return (!is_string($value) || empty($value));
+                                        })
+                                        ->thenInvalid(
+                                            'Invalid Gateway API password specified: "%s". Must be non-empty string'
+                                        )
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->scalarNode('url')
+                            ->info('The URL to the Gateway application (e.g. https://gateway.tld)')
+                            ->isRequired()
+                            ->validate()
+                                ->ifTrue(function ($value) {
+                                    return (!is_string($value) || empty($value) || !preg_match('~/$~', $value));
+                                })
+                                ->thenInvalid(
+                                    'Invalid Gateway URL specified: "%s". Must be string ending in forward slash'
+                                )
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     private function createSmsConfiguration(ArrayNodeDefinition $root)
