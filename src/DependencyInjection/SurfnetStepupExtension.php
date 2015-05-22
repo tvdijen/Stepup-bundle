@@ -23,7 +23,9 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class SurfnetStepupExtension extends Extension
@@ -55,22 +57,37 @@ class SurfnetStepupExtension extends Extension
             ->replaceArgument(2, $config['sms']['otp_expiry_interval'])
             ->replaceArgument(3, $config['sms']['maximum_otp_requests']);
 
-        $gatewayGuzzleOptions = [
-            'base_url' => $config['gateway_api']['url'],
-            'defaults' => [
-                'auth' => [
-                    $config['gateway_api']['credentials']['username'],
-                    $config['gateway_api']['credentials']['password'],
-                    'basic'
-                ],
-                'headers' => [
-                    'Accept' => 'application/json'
-                ]
-            ]
-        ];
+        $container
+            ->getDefinition('surfnet_stepup.service.sms_second_factor')
+            ->replaceArgument(0, new Reference($config['sms']['service']));
 
-        $gatewayGuzzle = $container->getDefinition('surfnet_stepup.guzzle.gateway_api');
-        $gatewayGuzzle->replaceArgument(0, $gatewayGuzzleOptions);
+        if (!$config['gateway_api']['enabled'] && $config['sms']['service'] === Configuration::DEFAULT_SMS_SERVICE) {
+            throw new RuntimeException('The gateway API is not enabled and no replacement SMS service is configured');
+        }
+
+        if ($config['gateway_api']['enabled']) {
+            # Configure the Gateway API SMS service's Guzzle client.
+            $gatewayGuzzleOptions = [
+                'base_url' => $config['gateway_api']['url'],
+                'defaults' => [
+                    'auth'    => [
+                        $config['gateway_api']['credentials']['username'],
+                        $config['gateway_api']['credentials']['password'],
+                        'basic'
+                    ],
+                    'headers' => [
+                        'Accept' => 'application/json'
+                    ]
+                ]
+            ];
+
+            $gatewayGuzzle = $container->getDefinition('surfnet_stepup.guzzle.gateway_api');
+            $gatewayGuzzle->replaceArgument(0, $gatewayGuzzleOptions);
+        } else {
+            # Remove the Gateway API SMS service and its Guzzle client.
+            $container->removeDefinition('surfnet_stepup.service.gateway_api_sms');
+            $container->removeDefinition('surfnet_stepup.guzzle.gateway_api');
+        }
     }
 
     private function defineLoas(array $loaDefinitions, ContainerBuilder $container)

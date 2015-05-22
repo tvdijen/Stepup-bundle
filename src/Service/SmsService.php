@@ -18,80 +18,13 @@
 
 namespace Surfnet\StepupBundle\Service;
 
-use GuzzleHttp\ClientInterface;
-use Psr\Log\LoggerInterface;
 use Surfnet\StepupBundle\Command\SendSmsCommand;
 
-class SmsService
+interface SmsService
 {
-    /**
-     * @var ClientInterface
-     */
-    private $guzzleClient;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @param ClientInterface $guzzleClient A Guzzle client configured with the SMS API base URL and authentication.
-     * @param LoggerInterface $logger
-     */
-    public function __construct(ClientInterface $guzzleClient, LoggerInterface $logger)
-    {
-        $this->guzzleClient = $guzzleClient;
-        $this->logger = $logger;
-    }
-
     /**
      * @param SendSmsCommand $command
      * @return bool
      */
-    public function sendSms(SendSmsCommand $command)
-    {
-        $this->logger->info('Requesting Gateway to send SMS');
-
-        $body = [
-            'requester' => ['institution' => $command->institution, 'identity' => $command->identity],
-            'message' => [
-                'originator' => $command->originator,
-                'recipient'  => $command->recipient,
-                'body'       => $command->body
-            ],
-        ];
-        $response = $this->guzzleClient->post('api/send-sms', ['json' => $body, 'exceptions' => false]);
-        $statusCode = $response->getStatusCode();
-
-        if ($statusCode != 200) {
-            $this->logger->error(
-                sprintf('SMS sending failed, error: [%s] %s', $response->getStatusCode(), $response->getReasonPhrase()),
-                ['http-body' => $response->getBody() ? $response->getBody()->getContents() : '',]
-            );
-
-            return false;
-        }
-
-        try {
-            $result = $response->json();
-        } catch (\RuntimeException $e) {
-            $this->logger->error('SMS sending failed; server responded with malformed JSON.');
-
-            return false;
-        }
-
-        if (!isset($result['status'])) {
-            $this->logger->error('SMS sending failed; server responded without status report.');
-
-            return false;
-        }
-
-        if ($result['status'] !== 'OK') {
-            $this->logger->error('SMS sending failed; server responded with non-OK status report.');
-
-            return false;
-        }
-
-        return true;
-    }
+    public function sendSms(SendSmsCommand $command);
 }

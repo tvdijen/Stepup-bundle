@@ -27,6 +27,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    const DEFAULT_SMS_SERVICE = 'surfnet_stepup.service.gateway_api_sms';
+
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder;
@@ -96,6 +98,7 @@ class Configuration implements ConfigurationInterface
         $root
             ->children()
                 ->arrayNode('gateway_api')
+                    ->canBeEnabled()
                     ->info('Gateway API configuration')
                     ->children()
                         ->arrayNode('credentials')
@@ -152,6 +155,19 @@ class Configuration implements ConfigurationInterface
                     ->info('SMS configuration')
                     ->isRequired()
                     ->children()
+                        ->scalarNode('service')
+                            ->info(
+                                'The ID of the SMS service used for sending SMS messages. ' .
+                                'Must implement "Surfnet\StepupBundle\Service\SmsService".'
+                            )
+                            ->defaultValue(self::DEFAULT_SMS_SERVICE)
+                            ->validate()
+                                ->ifTrue(function ($value) {
+                                    return !is_string($value);
+                                })
+                                ->thenInvalid('The SMS service ID must be specified using a string.')
+                            ->end()
+                        ->end()
                         ->scalarNode('originator')
                             ->info('Originator (sender) for SMS messages')
                             ->isRequired()
