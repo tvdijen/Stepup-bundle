@@ -18,8 +18,8 @@
 
 namespace Surfnet\StepupBundle\Tests\Value;
 
-use stdClass;
 use PHPUnit_Framework_TestCase as UnitTest;
+use stdClass;
 use Surfnet\StepupBundle\Value\Loa;
 
 class LoaTest extends UnitTest

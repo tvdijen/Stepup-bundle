@@ -20,9 +20,7 @@ namespace Surfnet\StepupBundle\Tests\Request;
 
 use Mockery as m;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Surfnet\StepupBundle\Exception\BadJsonRequestException;
 use Surfnet\StepupBundle\Request\JsonConvertibleParamConverter;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 class JsonConvertibleParamConverterTest extends \PHPUnit_Framework_TestCase

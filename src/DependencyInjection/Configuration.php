@@ -18,6 +18,7 @@
 
 namespace Surfnet\StepupBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -26,12 +27,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    const DEFAULT_SMS_SERVICE = 'surfnet_stepup.service.gateway_api_sms';
+
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder;
 
-        $treeBuilder
-            ->root('surfnet_bundle')
+        $rootNode = $treeBuilder->root('surfnet_bundle');
+        $rootNode
             ->children()
                 ->arrayNode('logging')
                     ->isRequired()
@@ -84,6 +87,126 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
 
+        $this->createGatewayApiConfiguration($rootNode);
+        $this->createSmsConfiguration($rootNode);
+
         return $treeBuilder;
+    }
+
+    private function createGatewayApiConfiguration(ArrayNodeDefinition $root)
+    {
+        $root
+            ->children()
+                ->arrayNode('gateway_api')
+                    ->canBeEnabled()
+                    ->info('Gateway API configuration')
+                    ->children()
+                        ->arrayNode('credentials')
+                            ->info('Basic authentication credentials')
+                            ->children()
+                                ->scalarNode('username')
+                                    ->info('Username for the Gateway API')
+                                    ->isRequired()
+                                    ->validate()
+                                        ->ifTrue(function ($value) {
+                                            return (!is_string($value) || empty($value));
+                                        })
+                                        ->thenInvalid(
+                                            'Invalid Gateway API username specified: "%s". Must be non-empty string'
+                                        )
+                                    ->end()
+                                ->end()
+                                ->scalarNode('password')
+                                    ->info('Password for the Gateway API')
+                                    ->isRequired()
+                                    ->validate()
+                                        ->ifTrue(function ($value) {
+                                            return (!is_string($value) || empty($value));
+                                        })
+                                        ->thenInvalid(
+                                            'Invalid Gateway API password specified: "%s". Must be non-empty string'
+                                        )
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->scalarNode('url')
+                            ->info('The URL to the Gateway application (e.g. https://gateway.tld)')
+                            ->isRequired()
+                            ->validate()
+                                ->ifTrue(function ($value) {
+                                    return (!is_string($value) || empty($value) || !preg_match('~/$~', $value));
+                                })
+                                ->thenInvalid(
+                                    'Invalid Gateway URL specified: "%s". Must be string ending in forward slash'
+                                )
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function createSmsConfiguration(ArrayNodeDefinition $root)
+    {
+        $root
+            ->children()
+                ->arrayNode('sms')
+                    ->info('SMS configuration')
+                    ->isRequired()
+                    ->children()
+                        ->scalarNode('service')
+                            ->info(
+                                'The ID of the SMS service used for sending SMS messages. ' .
+                                'Must implement "Surfnet\StepupBundle\Service\SmsService".'
+                            )
+                            ->defaultValue(self::DEFAULT_SMS_SERVICE)
+                            ->validate()
+                                ->ifTrue(function ($value) {
+                                    return !is_string($value);
+                                })
+                                ->thenInvalid('The SMS service ID must be specified using a string.')
+                            ->end()
+                        ->end()
+                        ->scalarNode('originator')
+                            ->info('Originator (sender) for SMS messages')
+                            ->isRequired()
+                            ->validate()
+                                ->ifTrue(function ($value) {
+                                    return (!is_string($value) || !preg_match('~^[a-z0-9]{1,11}$~i', $value));
+                                })
+                                ->thenInvalid(
+                                    'Invalid SMS originator specified: "%s". Must be a string matching '
+                                    . '"~^[a-z0-9]{1,11}$~i".'
+                                )
+                            ->end()
+                        ->end()
+                        ->integerNode('otp_expiry_interval')
+                            ->info('After how many seconds an SMS challenge OTP expires')
+                            ->isRequired()
+                            ->validate()
+                                ->ifTrue(function ($value) {
+                                    return $value <= 0;
+                                })
+                                ->thenInvalid(
+                                    'Invalid SMS challenge OTP expiry, must be one or more seconds.'
+                                )
+                            ->end()
+                        ->end()
+                        ->integerNode('maximum_otp_requests')
+                            ->info('How many challenges a user may request during a session')
+                            ->isRequired()
+                            ->validate()
+                                ->ifTrue(function ($value) {
+                                    return $value <= 0;
+                                })
+                                ->thenInvalid(
+                                    'Maximum OTP requests has a minimum of 1'
+                                )
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 }
