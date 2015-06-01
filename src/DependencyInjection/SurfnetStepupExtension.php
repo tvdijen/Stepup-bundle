@@ -88,6 +88,9 @@ class SurfnetStepupExtension extends Extension
             $container->removeDefinition('surfnet_stepup.service.gateway_api_sms');
             $container->removeDefinition('surfnet_stepup.guzzle.gateway_api');
         }
+
+        $container->getDefinition('surfnet_stepup.form.choice_list.locales')
+            ->replaceArgument(0, $container->getParameter('locales'));
     }
 
     private function defineLoas(array $loaDefinitions, ContainerBuilder $container)

@@ -101,3 +101,23 @@ services:
         class: GuzzleHttp\Client
         arguments:
             - {} # Set from the extension
+
+    surfnet_stepup.form.choice_list.locales:
+        class: Surfnet\StepupBundle\Form\ChoiceList\LocaleChoiceList
+        arguments:
+            - [] # See Extension
+            - @request_stack
+
+    surfnet_stepup.form.switch_locale:
+        class: Surfnet\StepupBundle\Form\Type\SwitchLocaleType
+        arguments:
+            - @surfnet_stepup.form.choice_list.locales
+            - @router
+        tags:
+            - { name: form.type, alias: stepup_switch_locale }
+
+    surfnet_stepup.twig.locale_extension:
+        class: Surfnet\StepupBundle\Twig\LocaleExtension
+        arguments: [ @form.factory ]
+        tags:
+            - { name: twig.extension }
