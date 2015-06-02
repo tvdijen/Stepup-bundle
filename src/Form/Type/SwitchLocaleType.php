@@ -19,15 +19,15 @@
 namespace Surfnet\StepupBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class SwitchLocaleType extends AbstractType
 {
     /**
-     * @var \Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface
+     * @var \Symfony\Component\Form\ChoiceList\ChoiceListInterface
      */
     private $localeChoiceList;
 
@@ -60,7 +60,7 @@ final class SwitchLocaleType extends AbstractType
         ]);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'route'            => null,
