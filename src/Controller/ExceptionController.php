@@ -20,8 +20,8 @@ namespace Surfnet\StepupBundle\Controller;
 
 use Surfnet\StepupBundle\Exception\Art;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as FrameworkController;
+use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\FlattenException;
 
 class ExceptionController extends FrameworkController
 {
