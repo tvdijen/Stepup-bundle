@@ -71,10 +71,8 @@ final class SwitchLocaleType extends AbstractType
 
         $resolver->setRequired(['route']);
 
-        $resolver->setAllowedTypes([
-            'route'            => 'string',
-            'route_parameters' => 'array',
-        ]);
+        $resolver->setAllowedTypes('route', 'string');
+        $resolver->setAllowedTypes('route_parameters', 'array');
     }
 
     public function getName()
