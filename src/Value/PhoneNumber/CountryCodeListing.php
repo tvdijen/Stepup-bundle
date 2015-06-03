@@ -36,6 +36,8 @@ class CountryCodeListing
      * can be linked to multiple countries (e.g. '+1' -> US and Canada) we use the formal definition linked to
      * the actual code.
      *
+     * When updating, update CountryCodeListing::$countryCodes to match.
+     *
      * @var array
      */
     private static $countries = [
@@ -283,6 +285,49 @@ class CountryCodeListing
     ];
 
     /**
+     * When updating, update CountryCodeListing::$countries to match.
+     *
+     * @var array
+     */
+    private static $countryCodes = [
+        '7840' => true, '7940' => true, '93' => true, '355' => true, '213' => true, '1684' => true, '376' => true,
+        '244' => true, '1264' => true, '1268' => true, '54' => true, '374' => true, '297' => true, '247' => true,
+        '61' => true, '672' => true, '43' => true, '994' => true, '1242' => true, '973' => true, '880' => true,
+        '1246' => true, '1268' => true, '375' => true, '32' => true, '501' => true, '229' => true, '1441' => true,
+        '975' => true, '591' => true, '387' => true, '267' => true, '55' => true, '246' => true, '1284' => true,
+        '673' => true, '359' => true, '226' => true, '257' => true, '855' => true, '237' => true, '1' => true,
+        '238' => true, '345' => true, '236' => true, '235' => true, '56' => true, '86' => true, '61' => true,
+        '61' => true, '57' => true, '269' => true, '242' => true, '243' => true, '682' => true, '506' => true,
+        '225' => true, '385' => true, '53' => true, '599' => true, '537' => true, '420' => true, '45' => true,
+        '246' => true, '253' => true, '1767' => true, '1809' => true, '1829' => true, '1849' => true, '670' => true,
+        '56' => true, '593' => true, '20' => true, '503' => true, '240' => true, '291' => true, '372' => true,
+        '251' => true, '500' => true, '298' => true, '679' => true, '358' => true, '33' => true, '596' => true,
+        '594' => true, '689' => true, '241' => true, '220' => true, '995' => true, '49' => true, '233' => true,
+        '350' => true, '30' => true, '299' => true, '1473' => true, '590' => true, '1671' => true, '502' => true,
+        '224' => true, '245' => true, '595' => true, '509' => true, '504' => true, '852' => true, '36' => true,
+        '354' => true, '91' => true, '62' => true, '98' => true, '964' => true, '353' => true, '972' => true,
+        '39' => true, '1876' => true, '81' => true, '962' => true, '76' => true, '77' => true, '254' => true,
+        '686' => true, '850' => true, '82' => true, '965' => true, '996' => true, '856' => true, '371' => true,
+        '961' => true, '266' => true, '231' => true, '218' => true, '423' => true, '370' => true, '352' => true,
+        '853' => true, '389' => true, '261' => true, '265' => true, '60' => true, '960' => true, '223' => true,
+        '356' => true, '692' => true, '596' => true, '222' => true, '230' => true, '262' => true, '52' => true,
+        '691' => true, '1808' => true, '373' => true, '377' => true, '976' => true, '382' => true, '1664' => true,
+        '212' => true, '95' => true, '264' => true, '674' => true, '977' => true, '31' => true, '599' => true,
+        '1869' => true, '687' => true, '64' => true, '505' => true, '227' => true, '234' => true, '683' => true,
+        '672' => true, '1670' => true, '47' => true, '968' => true, '92' => true, '680' => true, '970' => true,
+        '507' => true, '675' => true, '595' => true, '51' => true, '63' => true, '48' => true, '351' => true,
+        '1787' => true, '1939' => true, '974' => true, '262' => true, '40' => true, '7' => true, '250' => true,
+        '685' => true, '378' => true, '966' => true, '221' => true, '381' => true, '248' => true, '232' => true,
+        '65' => true, '421' => true, '386' => true, '677' => true, '27' => true, '500' => true, '34' => true,
+        '94' => true, '249' => true, '597' => true, '268' => true, '46' => true, '41' => true, '963' => true,
+        '886' => true, '992' => true, '255' => true, '66' => true, '670' => true, '228' => true, '690' => true,
+        '676' => true, '1868' => true, '216' => true, '90' => true, '993' => true, '1649' => true, '688' => true,
+        '256' => true, '380' => true, '971' => true, '44' => true, '1' => true, '598' => true, '1340' => true,
+        '998' => true, '678' => true, '58' => true, '84' => true, '1808' => true, '681' => true, '967' => true,
+        '260' => true, '255' => true, '263' => true,
+    ];
+
+    /**
      * @return ChoiceListInterface
      */
     public static function asChoiceList()
@@ -313,12 +358,6 @@ class CountryCodeListing
      */
     public static function isValidCountryCode($countryCode)
     {
-        foreach (static::$countries as $country) {
-            if ($country[0] == $countryCode) {
-                return true;
-            }
-        }
-
-        return false;
+        return isset(static::$countryCodes[$countryCode]);
     }
 }
