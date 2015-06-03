@@ -42,9 +42,10 @@ final class LocaleExtension extends Extension
         ];
     }
 
-    public function getLocalePreferenceForm($route, array $routeParameters = [])
+    public function getLocalePreferenceForm($currentLocale, $route, array $routeParameters = [])
     {
         $command = new SwitchLocaleCommand();
+        $command->locale = $currentLocale;
 
         $form = $this->formFactory->create(
             'stepup_switch_locale',
