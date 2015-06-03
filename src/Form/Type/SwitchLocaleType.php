@@ -18,16 +18,16 @@
 
 namespace Surfnet\StepupBundle\Form\Type;
 
+use Surfnet\StepupBundle\Form\ChoiceList\LocaleChoiceList;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class SwitchLocaleType extends AbstractType
 {
     /**
-     * @var \Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface
+     * @var \Surfnet\StepupBundle\Form\ChoiceList\LocaleChoiceList
      */
     private $localeChoiceList;
 
@@ -36,7 +36,7 @@ final class SwitchLocaleType extends AbstractType
      */
     private $urlGenerator;
 
-    public function __construct(ChoiceListInterface $localeChoiceList, UrlGeneratorInterface $urlGenerator)
+    public function __construct(LocaleChoiceList $localeChoiceList, UrlGeneratorInterface $urlGenerator)
     {
         $this->localeChoiceList = $localeChoiceList;
         $this->urlGenerator = $urlGenerator;
@@ -52,7 +52,8 @@ final class SwitchLocaleType extends AbstractType
             'widget_addon_prepend' => [
                 'icon' => 'language'
             ],
-            'choice_list' => $this->localeChoiceList,
+            'choices' => $this->localeChoiceList->create(),
+            'choices_as_values' => true,
         ]);
         $builder->add('switch', 'submit', [
             'label' => 'stepup_middleware_client.form.switch_locale.switch',
@@ -60,7 +61,7 @@ final class SwitchLocaleType extends AbstractType
         ]);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'route'            => null,
@@ -70,10 +71,8 @@ final class SwitchLocaleType extends AbstractType
 
         $resolver->setRequired(['route']);
 
-        $resolver->setAllowedTypes([
-            'route'            => 'string',
-            'route_parameters' => 'array',
-        ]);
+        $resolver->setAllowedTypes('route', 'string');
+        $resolver->setAllowedTypes('route_parameters', 'array');
     }
 
     public function getName()

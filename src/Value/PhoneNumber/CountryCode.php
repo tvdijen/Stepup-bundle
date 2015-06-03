@@ -42,7 +42,6 @@ class CountryCode
             throw new InvalidCountryCodeFormatException($countyCode);
         }
 
-
         if (!CountryCodeListing::isValidCountryCode($countyCode)) {
             throw UnknownCountryCodeException::unknownCountryCode($countyCode);
         }

@@ -19,12 +19,9 @@
 namespace Surfnet\StepupBundle\Form\ChoiceList;
 
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
-use Symfony\Component\Form\Extension\Core\ChoiceList\LazyChoiceList;
-use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Intl\Intl;
 
-final class LocaleChoiceList extends LazyChoiceList
+final class LocaleChoiceList
 {
     /**
      * @var string[]
@@ -48,23 +45,15 @@ final class LocaleChoiceList extends LazyChoiceList
             }
         }
 
-        $this->locales = array_combine(
-            $locales,
-            array_map(
-                function ($locale) {
-                    return 'locale.' . $locale;
-                },
-                $locales
-            )
-        );
-
+        $this->locales = $locales;
         $this->requestStack = $requestStack;
     }
 
-    protected function loadChoiceList()
+    public function create()
     {
-        $currentLocale = $this->requestStack->getCurrentRequest()->getLocale();
-
-        return new SimpleChoiceList($this->locales, [$currentLocale]);
+        return array_combine(
+            array_map(function ($locale) { return 'locale.' . $locale; }, $this->locales),
+            $this->locales
+        );
     }
 }
