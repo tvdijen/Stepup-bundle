@@ -336,7 +336,7 @@ class CountryCodeListing
             function (array $country) {
                 return new Country(new CountryCode($country[0]), $country[1]);
             },
-            static::$countries
+            self::$countries
         );
         $countryNames = array_map('strval', $countries);
 
@@ -358,6 +358,6 @@ class CountryCodeListing
      */
     public static function isValidCountryCode($countryCode)
     {
-        return isset(static::$countryCodes[$countryCode]);
+        return isset(self::$countryCodes[$countryCode]);
     }
 }
