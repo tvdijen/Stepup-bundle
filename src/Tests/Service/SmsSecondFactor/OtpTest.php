@@ -67,7 +67,7 @@ class OtpTest extends TestCase
     public function only_accepts_string_otps($nonString)
     {
         $this->setExpectedException(
-            'Surfnet\StepupRa\RaBundle\Exception\InvalidArgumentException',
+            'Surfnet\StepupBundle\Exception\InvalidArgumentException',
             'otpString'
         );
         Otp::create($nonString, '123', new DateInterval('PT5M'));
@@ -82,7 +82,7 @@ class OtpTest extends TestCase
     public function only_accepts_string_phone_numbers($nonString)
     {
         $this->setExpectedException(
-            'Surfnet\StepupRa\RaBundle\Exception\InvalidArgumentException',
+            'Surfnet\StepupBundle\Exception\InvalidArgumentException',
             'phoneNumber'
         );
         Otp::create('ABCDEFG', $nonString, new DateInterval('PT5M'));
@@ -97,7 +97,7 @@ class OtpTest extends TestCase
     public function it_verifies_only_string_otps($nonString)
     {
         $this->setExpectedException(
-            'Surfnet\StepupRa\RaBundle\Exception\InvalidArgumentException',
+            'Surfnet\StepupBundle\Exception\InvalidArgumentException',
             'otpString'
         );
         $otp = Otp::create($nonString, '123', new DateInterval('PT5M'));

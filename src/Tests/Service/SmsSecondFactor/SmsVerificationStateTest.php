@@ -75,7 +75,7 @@ class SmsVerificationStateTest extends TestCase
     public function it_accepts_only_string_phone_numbers($nonString)
     {
         $this->setExpectedException(
-            'Surfnet\StepupRa\RaBundle\Exception\InvalidArgumentException',
+            'Surfnet\StepupBundle\Exception\InvalidArgumentException',
             'phoneNumber'
         );
         $state = new SmsVerificationState(new DateInterval('PT15M'), 3);
@@ -91,7 +91,7 @@ class SmsVerificationStateTest extends TestCase
     public function it_verifies_only_string_otps($nonString)
     {
         $this->setExpectedException(
-            'Surfnet\StepupRa\RaBundle\Exception\InvalidArgumentException',
+            'Surfnet\StepupBundle\Exception\InvalidArgumentException',
             'userOtp'
         );
         $state = new SmsVerificationState(new DateInterval('PT15M'), 3);
@@ -160,7 +160,7 @@ class SmsVerificationStateTest extends TestCase
         $this->assertSame(0, $state->getOtpRequestsRemainingCount());
 
         $this->setExpectedException(
-            'Surfnet\StepupRa\RaBundle\Service\Exception\TooManyChallengesRequestedException'
+            'Surfnet\StepupBundle\Service\Exception\TooManyChallengesRequestedException'
         );
         $state->requestNewOtp('123');
         $this->assertSame(0, $state->getOtpRequestsRemainingCount());
@@ -180,7 +180,7 @@ class SmsVerificationStateTest extends TestCase
     public function maximum_challenges_must_be_gte_1($maximumTries)
     {
         $this->setExpectedException(
-            'Surfnet\StepupRa\RaBundle\Exception\InvalidArgumentException',
+            'Surfnet\StepupBundle\Exception\InvalidArgumentException',
             'maximum OTP requests'
         );
 
