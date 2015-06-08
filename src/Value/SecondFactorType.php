@@ -22,6 +22,9 @@ use JsonSerializable;
 use Surfnet\StepupBundle\Exception\DomainException;
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyMethods) All methods are relevant and simple.
+ */
 final class SecondFactorType implements JsonSerializable
 {
     private static $loaLevelTypeMap = [
