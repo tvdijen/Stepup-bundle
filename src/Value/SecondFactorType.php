@@ -18,10 +18,11 @@
 
 namespace Surfnet\StepupBundle\Value;
 
+use JsonSerializable;
 use Surfnet\StepupBundle\Exception\DomainException;
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 
-final class SecondFactorType
+final class SecondFactorType implements JsonSerializable
 {
     private static $loaLevelTypeMap = [
         'sms'     => Loa::LOA_2,
@@ -147,6 +148,11 @@ final class SecondFactorType
      * @return string
      */
     public function __toString()
+    {
+        return $this->type;
+    }
+
+    public function jsonSerialize()
     {
         return $this->type;
     }
