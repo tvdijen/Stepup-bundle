@@ -102,6 +102,40 @@ final class SecondFactorType
     }
 
     /**
+     * @return bool
+     */
+    public function isSms()
+    {
+        return $this->type === 'sms';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isYubikey()
+    {
+        return $this->type === 'yubikey';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTiqr()
+    {
+        return $this->type === 'tiqr';
+    }
+
+    /**
+     * Returns whether this type is one of the Generic SAML Second Factor types.
+     *
+     * @return bool
+     */
+    public function isGssf()
+    {
+        return $this->type === 'tiqr';
+    }
+
+    /**
      * @return int
      */
     public function getLevel()
