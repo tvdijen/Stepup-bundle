@@ -30,7 +30,7 @@ class DateTimeHelper
      */
     public static function setCurrentTime(DateTime $now = null)
     {
-        $nowProperty = new ReflectionProperty('Surfnet\StepupRa\RaBundle\DateTime\DateTime', 'now');
+        $nowProperty = new ReflectionProperty('Surfnet\StepupBundle\DateTime\DateTime', 'now');
         $nowProperty->setAccessible(true);
         $nowProperty->setValue($now);
     }

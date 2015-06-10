@@ -71,4 +71,52 @@ class InternationalPhoneNumberTest extends UnitTest
 
         $this->assertEquals('31612345678', $phoneNumber->toMSISDN());
     }
+
+    public function invalid_types()
+    {
+        return [
+            'array'        => [array()],
+            'integer'      => [1],
+            'object'       => [new \stdClass()],
+            'null'         => [null],
+            'bool'         => [false],
+            'resource'     => [fopen('php://memory', 'w')],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalid_types
+     * @expectedException \Surfnet\StepupBundle\Exception\InvalidArgumentException
+     * @group value
+     *
+     * @param mixed $invalidType
+     */
+    public function it_rejects_invalid_types($invalidType)
+    {
+        InternationalPhoneNumber::fromStringFormat($invalidType);
+    }
+
+    public function invalid_phone_numbers()
+    {
+        return [
+            'garbage before phone number' => ['garbage+31 (0) 681819571'],
+            'garbage after phone number' => ['+31 (0) 681819571garbage'],
+            'msisdn'       => ['31612345678'],
+            'empty string' => [''],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalid_phone_numbers
+     * @expectedException \Surfnet\StepupBundle\Value\Exception\InvalidPhoneNumberFormatException
+     * @group value
+     *
+     * @param mixed $invalidPhoneNumber
+     */
+    public function it_rejects_invalid_phone_numbers($invalidPhoneNumber)
+    {
+        InternationalPhoneNumber::fromStringFormat($invalidPhoneNumber);
+    }
 }
