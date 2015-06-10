@@ -27,6 +27,7 @@ class InternationalPhoneNumber
      * @var CountryCode
      */
     private $countryCode;
+
     /**
      * @var PhoneNumber
      */

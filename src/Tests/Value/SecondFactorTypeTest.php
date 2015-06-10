@@ -77,6 +77,17 @@ final class SecondFactorTypeTest extends TestCase
     /**
      * @test
      */
+    public function its_type_can_be_verified()
+    {
+        $this->assertTrue((new SecondFactorType('sms'))->isSms());
+        $this->assertTrue((new SecondFactorType('yubikey'))->isYubikey());
+        $this->assertTrue((new SecondFactorType('tiqr'))->isTiqr());
+        $this->assertTrue((new SecondFactorType('tiqr'))->isGssf());
+    }
+
+    /**
+     * @test
+     */
     public function they_can_be_compared()
     {
         $this->assertTrue(
