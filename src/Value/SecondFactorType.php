@@ -140,6 +140,14 @@ final class SecondFactorType implements JsonSerializable
     }
 
     /**
+     * @return string
+     */
+    public function getSecondFactorType()
+    {
+        return $this->type;
+    }
+
+    /**
      * @return int
      */
     public function getLevel()
