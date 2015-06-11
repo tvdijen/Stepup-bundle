@@ -152,6 +152,7 @@ class Configuration implements ConfigurationInterface
         $root
             ->children()
                 ->arrayNode('sms')
+                    ->canBeDisabled()
                     ->info('SMS configuration')
                     ->isRequired()
                     ->children()
@@ -170,7 +171,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->scalarNode('originator')
                             ->info('Originator (sender) for SMS messages')
-                            ->isRequired()
                             ->validate()
                                 ->ifTrue(function ($value) {
                                     return (!is_string($value) || !preg_match('~^[a-z0-9]{1,11}$~i', $value));
@@ -183,7 +183,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->integerNode('otp_expiry_interval')
                             ->info('After how many seconds an SMS challenge OTP expires')
-                            ->isRequired()
                             ->validate()
                                 ->ifTrue(function ($value) {
                                     return $value <= 0;
@@ -195,7 +194,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->integerNode('maximum_otp_requests')
                             ->info('How many challenges a user may request during a session')
-                            ->isRequired()
                             ->validate()
                                 ->ifTrue(function ($value) {
                                     return $value <= 0;
