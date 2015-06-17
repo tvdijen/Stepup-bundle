@@ -61,6 +61,9 @@ services:
         arguments:
             - @surfnet_stepup.monolog.gelf_message_formatter
 
+    surfnet_stepup.monolog.json_formatter:
+        class: Surfnet\StepupBundle\Monolog\Formatter\JsonFormatter
+
     surfnet_stepup.monolog.gelf_message_formatter:
         public: false
         class: Monolog\Formatter\GelfMessageFormatter
