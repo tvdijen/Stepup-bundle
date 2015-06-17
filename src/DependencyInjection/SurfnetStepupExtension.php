@@ -49,20 +49,26 @@ class SurfnetStepupExtension extends Extension
             $container->removeDefinition('surfnet_stepup.service.loa_resolution');
         }
 
-        $smsSecondFactorService = $container->getDefinition('surfnet_stepup.service.sms_second_factor');
-        $smsSecondFactorService->replaceArgument(2, $config['sms']['originator']);
+        if ($config['sms']['enabled'] === false) {
+            $container->removeDefinition('surfnet_stepup.service.sms_second_factor');
+            $container->removeDefinition('surfnet_stepup.service.challenge_handler');
+            $container->removeDefinition('surfnet_stepup.service.sms_second_factor');
+        } else {
+            $smsSecondFactorService = $container->getDefinition('surfnet_stepup.service.sms_second_factor');
+            $smsSecondFactorService->replaceArgument(2, $config['sms']['originator']);
 
-        $container
-            ->getDefinition('surfnet_stepup.service.challenge_handler')
-            ->replaceArgument(2, $config['sms']['otp_expiry_interval'])
-            ->replaceArgument(3, $config['sms']['maximum_otp_requests']);
+            $container
+                ->getDefinition('surfnet_stepup.service.challenge_handler')
+                ->replaceArgument(2, $config['sms']['otp_expiry_interval'])
+                ->replaceArgument(3, $config['sms']['maximum_otp_requests']);
 
-        $container
-            ->getDefinition('surfnet_stepup.service.sms_second_factor')
-            ->replaceArgument(0, new Reference($config['sms']['service']));
+            $container
+                ->getDefinition('surfnet_stepup.service.sms_second_factor')
+                ->replaceArgument(0, new Reference($config['sms']['service']));
 
-        if (!$config['gateway_api']['enabled'] && $config['sms']['service'] === Configuration::DEFAULT_SMS_SERVICE) {
-            throw new RuntimeException('The gateway API is not enabled and no replacement SMS service is configured');
+            if (!$config['gateway_api']['enabled'] && $config['sms']['service'] === Configuration::DEFAULT_SMS_SERVICE) {
+                throw new RuntimeException('The gateway API is not enabled and no replacement SMS service is configured');
+            }
         }
 
         if ($config['gateway_api']['enabled']) {
