@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "137819aaa6ccfc605b332744d5788c7e",
+    "hash": "49d5d40308c85917939e16c147a020f1",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2839,7 +2839,7 @@
             ],
             "authors": [
                 {
-                    "name": "Pádraic Brady",
+                    "name": "Padraic Brady",
                     "email": "padraic.brady@gmail.com",
                     "homepage": "http://blog.astrumfutura.com"
                 },
@@ -4494,6 +4494,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "~5.4",
+        "ext-gmp": "*",
         "ext-openssl": "*"
     },
     "platform-dev": []
