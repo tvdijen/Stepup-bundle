@@ -19,6 +19,7 @@
 namespace Surfnet\StepupBundle\Tests\Value;
 
 use PHPUnit_Framework_TestCase as TestCase;
+use Surfnet\StepupBundle\Value\YubikeyOtp;
 use Surfnet\StepupBundle\Value\YubikeyPublicId;
 
 final class YubikeyPublicIdTest extends TestCase
@@ -101,48 +102,27 @@ final class YubikeyPublicIdTest extends TestCase
         $this->assertEquals($validFormat, $id->getYubikeyPublicId());
     }
 
-    public function invalidModHexProvider()
+    public function otpProvider()
     {
         return [
-            'ID (numeric value) too high' => ['bcccccccccccccccc'],
-            'Invalid characters'          => ['01234abcde'],
-            'Empty'                       => [''],
+            'Maximum value' => ['vvvvvvvvvvvvvvvvbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', '18446744073709551615'],
+            'Minimum value' => ['cbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', '00000000'],
+            'Real-life ID'  => ['ccccccbtbhnhbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', '01906358'],
         ];
     }
 
     /**
      * @test
      * @group value
-     * @dataProvider invalidModHexProvider
-     * @expectedException Surfnet\StepupBundle\Exception\InvalidArgumentException
+     * @dataProvider otpProvider
      *
-     * @param mixed $invalidFormat
-     */
-    public function it_doesnt_accept_invalid_modhex_foramts($invalidFormat)
-    {
-        YubikeyPublicId::fromModHex($invalidFormat);
-    }
-
-    public function validModHexProvider()
-    {
-        return [
-            'Maximum value' => ['vvvvvvvvvvvvvvvv', '18446744073709551615'],
-            'Minimum value' => ['c', '00000000'],
-            'Real-life ID'  => ['ccccccbtbhnh', '01906358'],
-        ];
-    }
-
-    /**
-     * @test
-     * @group value
-     * @dataProvider validModHexProvider
-     *
-     * @param string $validModHex
+     * @param string $otpString
      * @param string $yubikeyPublicId
      */
-    public function it_accepts_valid_modhex_formats($validModHex, $yubikeyPublicId)
+    public function it_accepts_valid_modhex_formats($otpString, $yubikeyPublicId)
     {
-        $id = YubikeyPublicId::fromModHex($validModHex);
+        $otp = YubikeyOtp::fromString($otpString);
+        $id  = YubikeyPublicId::fromOtp($otp);
 
         $this->assertEquals($yubikeyPublicId, $id->getYubikeyPublicId());
     }

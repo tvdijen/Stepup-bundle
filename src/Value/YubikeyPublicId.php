@@ -27,20 +27,12 @@ final class YubikeyPublicId
      */
     private $value;
 
-    public static function fromModHex($modhex)
+    public static function fromOtp(YubikeyOtp $otp)
     {
-        if (!is_string($modhex)) {
-            throw InvalidArgumentException::invalidType('string', 'modhex', $modhex);
-        }
+        $hexadecimalId = strtr($otp->publicId, 'cbdefghijklnrtuv', '0123456789abcdef');
+        $gmpId = gmp_init($hexadecimalId, 16);
 
-        if (!preg_match('~^[cbdefghijklnrtuv]+$~', $modhex)) {
-            throw new InvalidArgumentException('Given ModHex string contains invalid characters');
-        }
-
-        $hex = strtr($modhex, 'cbdefghijklnrtuv', '0123456789abcdef');
-        $number = gmp_init($hex, 16);
-
-        return new self(sprintf('%08s', gmp_strval($number, 10)));
+        return new self(sprintf('%08s', gmp_strval($gmpId, 10)));
     }
 
     public function __construct($value)
