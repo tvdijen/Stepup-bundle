@@ -65,9 +65,9 @@ final class YubikeyPublicId
         return $this->value;
     }
 
-    public function equals(SecondFactorIdentifier $other)
+    public function equals(YubikeyPublicId $other)
     {
-        return $other instanceof self && $this->value === $other->value;
+        return $this->value === $other->value;
     }
 
     public function jsonSerialize()

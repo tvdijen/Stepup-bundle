@@ -126,4 +126,18 @@ final class YubikeyPublicIdTest extends TestCase
 
         $this->assertEquals($yubikeyPublicId, $id->getYubikeyPublicId());
     }
+
+    /**
+     * @test
+     * @group value
+     */
+    public function it_can_check_for_equality()
+    {
+        $id = new YubikeyPublicId('01908382');
+        $same = new YubikeyPublicId('01908382');
+        $different = new YubikeyPublicId('987654322');
+
+        $this->assertTrue($id->equals($same), 'Equal YubikeyPublicId are not equal');
+        $this->assertFalse($id->equals($different), 'Dissimilar YubikeyPublicId are equal');
+    }
 }
