@@ -18,10 +18,14 @@
 
 namespace Surfnet\StepupBundle\Value;
 
+use JsonSerializable;
 use Surfnet\StepupBundle\Exception\DomainException;
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 
-final class SecondFactorType
+/**
+ * @SuppressWarnings(PHPMD.TooManyMethods) All methods are relevant and simple.
+ */
+final class SecondFactorType implements JsonSerializable
 {
     private static $loaLevelTypeMap = [
         'sms'     => Loa::LOA_2,
@@ -102,6 +106,48 @@ final class SecondFactorType
     }
 
     /**
+     * @return bool
+     */
+    public function isSms()
+    {
+        return $this->type === 'sms';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isYubikey()
+    {
+        return $this->type === 'yubikey';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTiqr()
+    {
+        return $this->type === 'tiqr';
+    }
+
+    /**
+     * Returns whether this type is one of the Generic SAML Second Factor types.
+     *
+     * @return bool
+     */
+    public function isGssf()
+    {
+        return $this->type === 'tiqr';
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecondFactorType()
+    {
+        return $this->type;
+    }
+
+    /**
      * @return int
      */
     public function getLevel()
@@ -113,6 +159,11 @@ final class SecondFactorType
      * @return string
      */
     public function __toString()
+    {
+        return $this->type;
+    }
+
+    public function jsonSerialize()
     {
         return $this->type;
     }

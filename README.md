@@ -22,3 +22,42 @@ A Symfony2 bundle that holds shared code and framework integration for all Step-
  * Copy and adjust the error templates to your application folder
     * `src/Resources/views/Exception/error.html.twig` → `app/Resources/SurfnetStepupBundle/views/Exception/error.html.twig`
     * `src/Resources/views/Exception/error404.html.twig` → `app/Resources/SurfnetStepupBundle/views/Exception/error404.html.twig`
+
+### Install resources
+
+```twig
+{% stylesheets filter='less'
+'@SurfnetStepupBundle/Resources/public/less/stepup.less'
+%}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+{% endstylesheets %}
+{% javascripts
+'@SurfnetStepupBundle/Resources/public/js/stepup.js'
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+```
+
+## Using the locale switcher
+
+The locale switcher is a form that can be rendered with the help of a Twig function.
+
+```twig
+{% if app.user %}
+    {% set locale_switcher = stepup_locale_switcher('handler_route', ['return-url' => app.request.uri]) %}
+    {{ form_start(locale_switcher, { attr: { class: 'form-inline' }}) }}
+    {{ form_widget(locale_switcher.locale) }}
+    {{ form_widget(locale_switcher.switch) }}
+    {{ form_end(locale_switcher) }}
+{% endif %}
+{% stylesheets filter='less'
+'@SurfnetStepupBundle/Resources/public/less/style.less'
+%}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
+{% endstylesheets %}
+{% javascripts
+'@SurfnetStepupBundle/Resources/public/js/index.js'
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+```

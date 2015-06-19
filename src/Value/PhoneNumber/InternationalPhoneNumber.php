@@ -18,6 +18,7 @@
 
 namespace Surfnet\StepupBundle\Value\PhoneNumber;
 
+use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 use Surfnet\StepupBundle\Value\Exception\InvalidPhoneNumberFormatException;
 
 class InternationalPhoneNumber
@@ -26,6 +27,7 @@ class InternationalPhoneNumber
      * @var CountryCode
      */
     private $countryCode;
+
     /**
      * @var PhoneNumber
      */
@@ -43,7 +45,11 @@ class InternationalPhoneNumber
      */
     public static function fromStringFormat($string)
     {
-        if (!preg_match('~\+([^\(]+)\(0\)\s{1}([\d]+)~', $string, $matches)) {
+        if (!is_string($string)) {
+            throw InvalidArgumentException::invalidType('string', 'string', $string);
+        }
+
+        if (!preg_match('~^\+([^\(]+)\(0\)\s{1}([\d]+)$~', $string, $matches)) {
             throw new InvalidPhoneNumberFormatException(
                 'In order to create the phone number from string, it must have the format "+31 (0) 614696076", formal: '
                 . '"+{CountryCode} (0) {PhoneNumber}"'

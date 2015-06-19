@@ -61,6 +61,9 @@ services:
         arguments:
             - @surfnet_stepup.monolog.gelf_message_formatter
 
+    surfnet_stepup.monolog.json_formatter:
+        class: Surfnet\StepupBundle\Monolog\Formatter\JsonFormatter
+
     surfnet_stepup.monolog.gelf_message_formatter:
         public: false
         class: Monolog\Formatter\GelfMessageFormatter
@@ -72,3 +75,52 @@ services:
 
     surfnet_stepup.service.loa_resolution:
         class: Surfnet\StepupBundle\Service\LoaResolutionService
+
+    surfnet_stepup.service.gateway_api_sms:
+        public: false
+        class: Surfnet\StepupBundle\Service\GatewayApiSmsService
+        arguments:
+            - @surfnet_stepup.guzzle.gateway_api
+            - @logger
+
+    surfnet_stepup.service.sms_second_factor:
+        class: Surfnet\StepupBundle\Service\SmsSecondFactorService
+        arguments:
+            - '' # SMS service set in extension
+            - @surfnet_stepup.service.challenge_handler
+            - '' # Originator set in extension
+
+    surfnet_stepup.service.challenge_handler:
+        public: false
+        class: Surfnet\StepupBundle\Service\SmsSecondFactor\SessionSmsVerificationStateHandler
+        arguments:
+            - @session
+            - 'Surfnet/Stepup/SecondFactor/Sms:challenge'
+            - {} # OTP expiry interval
+            - 0  # Maximum OTP requests
+
+    surfnet_stepup.guzzle.gateway_api:
+        public: false
+        class: GuzzleHttp\Client
+        arguments:
+            - {} # Set from the extension
+
+    surfnet_stepup.form.choice_list.locales:
+        class: Surfnet\StepupBundle\Form\ChoiceList\LocaleChoiceList
+        arguments:
+            - [] # See Extension
+            - @request_stack
+
+    surfnet_stepup.form.switch_locale:
+        class: Surfnet\StepupBundle\Form\Type\SwitchLocaleType
+        arguments:
+            - @surfnet_stepup.form.choice_list.locales
+            - @router
+        tags:
+            - { name: form.type, alias: stepup_switch_locale }
+
+    surfnet_stepup.twig.locale_extension:
+        class: Surfnet\StepupBundle\Twig\LocaleExtension
+        arguments: [ @form.factory ]
+        tags:
+            - { name: twig.extension }

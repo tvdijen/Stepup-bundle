@@ -18,10 +18,16 @@
 
 namespace Surfnet\StepupBundle\Value\PhoneNumber;
 
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 
 class CountryCodeListing
 {
+    /**
+     * The preferred choice to display on forms. Currently The Netherlands (+31).
+     */
+    const PREFERRED_CHOICE = '31';
+
     /**
      * List of currently (2015-03-16) known and used country codes as per
      * {@see en.wikipedia.org/wiki/List_of_country_calling_codes}
@@ -30,9 +36,11 @@ class CountryCodeListing
      * can be linked to multiple countries (e.g. '+1' -> US and Canada) we use the formal definition linked to
      * the actual code.
      *
+     * When updating, update CountryCodeListing::$countryCodes to match.
+     *
      * @var array
      */
-    private static $countryCodes = [
+    private static $countries = [
         'Abkhazia (+7 840)'                                   => '7840',
         'Abkhazia (+7 940)'                                   => '7940',
         'Afghanistan (+93)'                                   => '93',
@@ -277,15 +285,28 @@ class CountryCodeListing
     ];
 
     /**
-     * @return ChoiceList
+     * @return ChoiceListInterface
      */
     public static function asChoiceList()
     {
-        return new ChoiceList(
-            array_values(static::$countryCodes),
-            array_keys(static::$countryCodes),
-            ['31'] // present Netherlands (+31) as preferred choice
-        );
+        $countries = [];
+
+        foreach (self::$countries as $name => $code) {
+            $countries[] = new Country(new CountryCode($code), $name);
+        }
+
+        $countryNames = array_keys(self::$countries);
+
+        return new ArrayChoiceList(array_combine($countryNames, $countries));
+    }
+
+    /**
+     * @param Country $country
+     * @return bool
+     */
+    public static function isPreferredChoice(Country $country)
+    {
+        return $country->getCountryCode()->equals(new CountryCode(self::PREFERRED_CHOICE));
     }
 
     /**
@@ -294,6 +315,6 @@ class CountryCodeListing
      */
     public static function isValidCountryCode($countryCode)
     {
-        return in_array($countryCode, static::$countryCodes);
+        return in_array($countryCode, self::$countries);
     }
 }
