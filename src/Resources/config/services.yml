@@ -124,3 +124,8 @@ services:
         arguments: [ @form.factory ]
         tags:
             - { name: twig.extension }
+
+    surfnet_stepup.listener.cache_control_header_response:
+        class: Surfnet\StepupBundle\EventListener\CacheControlHeaderResponseListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
