@@ -75,6 +75,8 @@ services:
 
     surfnet_stepup.service.loa_resolution:
         class: Surfnet\StepupBundle\Service\LoaResolutionService
+        arguments:
+            - [] # Set in extension
 
     surfnet_stepup.service.gateway_api_sms:
         public: false
