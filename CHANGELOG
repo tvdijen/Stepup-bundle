@@ -2,6 +2,9 @@
 VERSION 1  RELEASE 1.0
 ======================
 
+   Version 1.2 - Allow Stepup Request ID to be atached to Guzzle client requests
+      29/07/2015 17:18  1.2.0  initial release
+
    Version 1.1 - Restrictive Caching Headers
       14/07/2015 13:33  1.1.0  initial release
 
