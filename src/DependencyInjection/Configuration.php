@@ -85,6 +85,13 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('attach_request_id_injector_to')
+                    ->prototype('scalar')
+                    ->validate()
+                        ->ifTrue(function ($serviceId) { return !is_string($serviceId); })
+                        ->thenInvalid('surfnet_bundle.attach_request_id_injector_to must be array of strings')
+                    ->end()
+                ->end()
             ->end();
 
         $this->createGatewayApiConfiguration($rootNode);
