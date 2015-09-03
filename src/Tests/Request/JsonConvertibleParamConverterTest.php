@@ -93,6 +93,27 @@ class JsonConvertibleParamConverterTest extends \PHPUnit_Framework_TestCase
         $paramConverter->apply($request, $configuration);
     }
 
+    public function testItConvertsASnakeCasedParameter()
+    {
+        $validator = m::mock('Symfony\Component\Validator\Validator\ValidatorInterface')
+            ->shouldReceive('validate')->andReturn(new ConstraintViolationList([]))
+            ->getMock();
+
+        $paramConverter = new JsonConvertibleParamConverter($validator);
+
+        $foo = new Foo();
+        $foo->bar = 'baz';
+        $foo->camelCased = 'yeah';
+
+        $request = $this->createJsonRequest((object) ['foo_bar' => ['bar' => 'baz', 'camel_cased' => 'yeah']]);
+        $request->attributes = m::mock('Symfony\Component\HttpFoundation\ParameterBag')
+            ->shouldReceive('set')->once()->with('fooBar', m::anyOf($foo))
+            ->getMock();
+
+        $configuration = new ParamConverter(['name' => 'fooBar', 'class' => 'Surfnet\StepupBundle\Tests\Request\Foo']);
+        $paramConverter->apply($request, $configuration);
+    }
+
     /**
      * @param mixed $object
      * @return \Symfony\Component\HttpFoundation\Request
