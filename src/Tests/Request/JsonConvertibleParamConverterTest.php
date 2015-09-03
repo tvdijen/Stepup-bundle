@@ -86,7 +86,7 @@ class JsonConvertibleParamConverterTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->createJsonRequest((object) ['foo' => ['bar' => 'baz', 'camel_cased' => 'yeah']]);
         $request->attributes = m::mock('Symfony\Component\HttpFoundation\ParameterBag')
-            ->shouldReceive('set')->once()->with('foo', $this->looseComparison($foo))
+            ->shouldReceive('set')->once()->with('foo', m::anyOf($foo))
             ->getMock();
 
         $configuration = new ParamConverter(['name' => 'foo', 'class' => 'Surfnet\StepupBundle\Tests\Request\Foo']);
@@ -125,14 +125,5 @@ class JsonConvertibleParamConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         return $request;
-    }
-
-    private function looseComparison($expected, $message = '')
-    {
-        return m::on(function ($actual) use ($expected, $message) {
-            $this->assertEquals($expected, $actual, $message);
-
-            return true;
-        });
     }
 }
