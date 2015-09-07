@@ -31,6 +31,7 @@ final class SecondFactorType implements JsonSerializable
         'sms'     => Loa::LOA_2,
         'tiqr'    => Loa::LOA_2,
         'yubikey' => Loa::LOA_3,
+        'u2f'     => Loa::LOA_3,
     ];
 
     /**
@@ -127,6 +128,14 @@ final class SecondFactorType implements JsonSerializable
     public function isTiqr()
     {
         return $this->type === 'tiqr';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isU2f()
+    {
+        return $this->type === 'u2f';
     }
 
     /**
