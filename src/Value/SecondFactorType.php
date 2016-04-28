@@ -28,9 +28,11 @@ use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 final class SecondFactorType implements JsonSerializable
 {
     private static $loaLevelTypeMap = [
-        'sms'     => Loa::LOA_2,
-        'tiqr'    => Loa::LOA_2,
-        'yubikey' => Loa::LOA_3,
+        'sms'       => Loa::LOA_2,
+        'tiqr'      => Loa::LOA_2,
+        'yubikey'   => Loa::LOA_3,
+        'u2f'       => Loa::LOA_3,
+        'biometric' => Loa::LOA_3,
     ];
 
     /**
@@ -130,13 +132,29 @@ final class SecondFactorType implements JsonSerializable
     }
 
     /**
+     * @return bool
+     */
+    public function isU2f()
+    {
+        return $this->type === 'u2f';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBiometric()
+    {
+        return $this->type === 'biometric';
+    }
+
+    /**
      * Returns whether this type is one of the Generic SAML Second Factor types.
      *
      * @return bool
      */
     public function isGssf()
     {
-        return $this->type === 'tiqr';
+        return $this->type === 'tiqr' || $this->type === 'biometric';
     }
 
     /**

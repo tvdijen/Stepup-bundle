@@ -45,16 +45,17 @@ class JsonConvertibleParamConverter implements ParamConverterInterface
     public function apply(Request $request, ParamConverter $configuration)
     {
         $name = $configuration->getName();
+        $snakeCasedName = $this->camelCaseToSnakeCase($name);
         $class = $configuration->getClass();
 
         $json = $request->getContent();
         $object = json_decode($json, true);
 
-        if (!isset($object[$name]) || !is_array($object[$name])) {
+        if (!isset($object[$snakeCasedName]) || !is_array($object[$snakeCasedName])) {
             throw new BadJsonRequestException([sprintf("Missing parameter '%s'", $name)]);
         }
 
-        $object = $object[$name];
+        $object = $object[$snakeCasedName];
         $convertedObject = new $class;
 
         $errors = [];
@@ -63,7 +64,7 @@ class JsonConvertibleParamConverter implements ParamConverterInterface
             $properlyCasedKey = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
 
             if (!property_exists($convertedObject, $properlyCasedKey)) {
-                $errors[] = sprintf("Unknown property '%s.%s'", $name, $key);
+                $errors[] = sprintf("Unknown property '%s.%s'", $snakeCasedName, $key);
 
                 continue;
             }
@@ -89,5 +90,26 @@ class JsonConvertibleParamConverter implements ParamConverterInterface
         }
 
         return is_subclass_of($class, 'Surfnet\StepupBundle\Request\JsonConvertible');
+    }
+
+    /**
+     * @param string $camelCase
+     * @return string
+     * @see \Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
+     */
+    private function camelCaseToSnakeCase($camelCase)
+    {
+        $snakeCase = '';
+
+        $len = strlen($camelCase);
+        for ($i = 0; $i < $len; $i++) {
+            if (ctype_upper($camelCase[$i])) {
+                $snakeCase .= '_'.strtolower($camelCase[$i]);
+            } else {
+                $snakeCase .= strtolower($camelCase[$i]);
+            }
+        }
+
+        return $snakeCase;
     }
 }
