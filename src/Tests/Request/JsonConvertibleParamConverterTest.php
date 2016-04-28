@@ -86,10 +86,31 @@ class JsonConvertibleParamConverterTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->createJsonRequest((object) ['foo' => ['bar' => 'baz', 'camel_cased' => 'yeah']]);
         $request->attributes = m::mock('Symfony\Component\HttpFoundation\ParameterBag')
-            ->shouldReceive('set')->once()->with('foo', $this->looseComparison($foo))
+            ->shouldReceive('set')->once()->with('foo', m::anyOf($foo))
             ->getMock();
 
         $configuration = new ParamConverter(['name' => 'foo', 'class' => 'Surfnet\StepupBundle\Tests\Request\Foo']);
+        $paramConverter->apply($request, $configuration);
+    }
+
+    public function testItConvertsASnakeCasedParameter()
+    {
+        $validator = m::mock('Symfony\Component\Validator\Validator\ValidatorInterface')
+            ->shouldReceive('validate')->andReturn(new ConstraintViolationList([]))
+            ->getMock();
+
+        $paramConverter = new JsonConvertibleParamConverter($validator);
+
+        $foo = new Foo();
+        $foo->bar = 'baz';
+        $foo->camelCased = 'yeah';
+
+        $request = $this->createJsonRequest((object) ['foo_bar' => ['bar' => 'baz', 'camel_cased' => 'yeah']]);
+        $request->attributes = m::mock('Symfony\Component\HttpFoundation\ParameterBag')
+            ->shouldReceive('set')->once()->with('fooBar', m::anyOf($foo))
+            ->getMock();
+
+        $configuration = new ParamConverter(['name' => 'fooBar', 'class' => 'Surfnet\StepupBundle\Tests\Request\Foo']);
         $paramConverter->apply($request, $configuration);
     }
 
@@ -104,14 +125,5 @@ class JsonConvertibleParamConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         return $request;
-    }
-
-    private function looseComparison($expected, $message = '')
-    {
-        return m::on(function ($actual) use ($expected, $message) {
-            $this->assertEquals($expected, $actual, $message);
-
-            return true;
-        });
     }
 }

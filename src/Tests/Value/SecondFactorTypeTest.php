@@ -29,6 +29,7 @@ final class SecondFactorTypeTest extends TestCase
             'sms' => ['sms'],
             'tiqr' => ['tiqr'],
             'yubikey' => ['yubikey'],
+            'biometric' => ['biometric'],
         ];
     }
 
@@ -83,6 +84,8 @@ final class SecondFactorTypeTest extends TestCase
         $this->assertTrue((new SecondFactorType('yubikey'))->isYubikey());
         $this->assertTrue((new SecondFactorType('tiqr'))->isTiqr());
         $this->assertTrue((new SecondFactorType('tiqr'))->isGssf());
+        $this->assertTrue((new SecondFactorType('biometric'))->isBiometric());
+        $this->assertTrue((new SecondFactorType('biometric'))->isGssf());
     }
 
     /**
