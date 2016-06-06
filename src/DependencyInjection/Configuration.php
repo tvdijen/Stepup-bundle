@@ -96,6 +96,7 @@ class Configuration implements ConfigurationInterface
 
         $this->createGatewayApiConfiguration($rootNode);
         $this->createSmsConfiguration($rootNode);
+        $this->createLocaleCookieConfiguration($rootNode);
 
         return $treeBuilder;
     }
@@ -210,6 +211,25 @@ class Configuration implements ConfigurationInterface
                                 )
                             ->end()
                         ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function createLocaleCookieConfiguration(ArrayNodeDefinition $root)
+    {
+        $root
+            ->children()
+                ->arrayNode('locale_cookie')
+                    ->info('Cookie settings for locale cookie')
+                    ->isRequired()
+                    ->children()
+                        ->scalarNode('name')->end()
+                        ->scalarNode('domain')->end()
+                        ->integerNode('expire')->end()
+                        ->scalarNode('path')->end()
+                        ->booleanNode('secure')->end()
+                        ->booleanNode('httpOnly')->end()
                     ->end()
                 ->end()
             ->end();
