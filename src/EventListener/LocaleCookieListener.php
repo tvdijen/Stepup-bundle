@@ -1,18 +1,35 @@
 <?php
 
+/**
+ * Copyright 2014 SURFnet bv
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 namespace Surfnet\StepupBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
+use Surfnet\StepupBundle\Http\CookieHelper;
 use Surfnet\StepupBundle\Service\LocaleProviderService;
-use Surfnet\StepupBundle\Value\CookieSettings;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 final class LocaleCookieListener
 {
     /**
-     * @var CookieSettings
+     * @var Cookie
      */
-    private $cookieSettings;
+    private $cookieHelper;
 
     /**
      * @var LocaleProviderService
@@ -25,11 +42,11 @@ final class LocaleCookieListener
     private $logger;
 
     public function __construct(
-        CookieSettings $cookieSettings,
+        CookieHelper $cookieHelper,
         LocaleProviderService $localeProvider,
         LoggerInterface $logger
     ) {
-        $this->cookieSettings = $cookieSettings;
+        $this->cookieHelper = $cookieHelper;
         $this->localeProvider = $localeProvider;
         $this->logger = $logger;
     }
@@ -43,22 +60,22 @@ final class LocaleCookieListener
     {
         $locale = $this->localeProvider->determinePreferredLocale();
 
-        // Unable to determine preferred locale.
-        if (!$locale) {
+        // Unable to determine preferred locale? No need to hand out a cookie then.
+        if (empty($locale)) {
             return;
         }
 
-        $valueFromCookie = $this->cookieSettings->value($event->getRequest());
-        if ($valueFromCookie === $locale) {
-            $this->logger->info(sprintf(
+        // Did the request already contain the proper cookie value? No need to hand out a cookie then.
+        $requestCookie = $this->cookieHelper->read($event->getRequest());
+        if ($requestCookie && $requestCookie->getValue() === $locale) {
+            $this->logger->debug(sprintf(
                 'Locale cookie already set to "%s", nothing to do here',
                 $locale
             ));
             return;
         }
 
-        $event->getResponse()->headers->setCookie($this->cookieSettings->toCookie($locale));
-
-        $this->logger->info(sprintf("Set locale cookie to %s", $locale));
+        $this->cookieHelper->write($event->getResponse(), $locale);
+        $this->logger->notice(sprintf("Set locale cookie to %s", $locale));
     }
 }
