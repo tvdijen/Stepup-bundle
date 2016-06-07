@@ -233,7 +233,7 @@ class Configuration implements ConfigurationInterface
                             ->defaultValue('surfconext.nl')
                         ->end()
                         ->integerNode('expire')
-                            ->info('Defines a specific date and time for when the browser should delete the cookie')
+                            ->info('Defines a specific number of seconds for when the browser should delete the cookie.')
                             ->defaultValue(0)
                         ->end()
                         ->scalarNode('path')
