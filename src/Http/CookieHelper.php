@@ -32,6 +32,11 @@ final class CookieHelper
      */
     private $cookie;
 
+    public function __construct(Cookie $cookie)
+    {
+        $this->cookie = $cookie;
+    }
+
     /**
      * Write a new value for the current cookie to a given Response.
      *
@@ -60,7 +65,7 @@ final class CookieHelper
         }
 
         return $this->createCookieWithValue(
-            $request->get($this->cookie->getName())
+            $request->cookies->get($this->cookie->getName())
         );
     }
 
