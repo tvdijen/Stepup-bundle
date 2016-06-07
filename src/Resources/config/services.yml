@@ -130,6 +130,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
 
+    surfnet_stepup.locale_cookie_helper:
+        class: Surfnet\StepupBundle\Http\CookieHelper
+        arguments:
+          - @surfnet_stepup.locale_cookie_settings
+
     surfnet_stepup.locale_cookie_settings:
+        public: false
         class: Symfony\Component\HttpFoundation\Cookie
         # Set from the extension
