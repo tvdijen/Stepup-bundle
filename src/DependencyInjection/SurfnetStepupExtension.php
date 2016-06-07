@@ -97,7 +97,15 @@ class SurfnetStepupExtension extends Extension
 
         $container->getDefinition('surfnet_stepup.locale_cookie_settings')
             ->setArguments(
-                array_values($config['locale_cookie'])
+                [
+                    $config['locale_cookie']['name'],
+                    null,
+                    $config['locale_cookie']['expire'],
+                    $config['locale_cookie']['path'],
+                    $config['locale_cookie']['domain'],
+                    $config['locale_cookie']['secure'],
+                    $config['locale_cookie']['http_only'],
+                ]
             );
 
         $container->getDefinition('surfnet_stepup.form.choice_list.locales')
