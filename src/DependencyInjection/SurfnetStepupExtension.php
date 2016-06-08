@@ -95,6 +95,19 @@ class SurfnetStepupExtension extends Extension
             $container->removeDefinition('surfnet_stepup.guzzle.gateway_api');
         }
 
+        $container->getDefinition('surfnet_stepup.locale_cookie_settings')
+            ->setArguments(
+                [
+                    $config['locale_cookie']['name'],
+                    null,
+                    $config['locale_cookie']['expire'],
+                    $config['locale_cookie']['path'],
+                    $config['locale_cookie']['domain'],
+                    $config['locale_cookie']['secure'],
+                    $config['locale_cookie']['http_only'],
+                ]
+            );
+
         $container->getDefinition('surfnet_stepup.form.choice_list.locales')
             ->replaceArgument(0, $container->getParameter('locales'));
     }
