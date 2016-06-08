@@ -96,6 +96,7 @@ class Configuration implements ConfigurationInterface
 
         $this->createGatewayApiConfiguration($rootNode);
         $this->createSmsConfiguration($rootNode);
+        $this->createLocaleCookieConfiguration($rootNode);
 
         return $treeBuilder;
     }
@@ -209,6 +210,43 @@ class Configuration implements ConfigurationInterface
                                     'Maximum OTP requests has a minimum of 1'
                                 )
                             ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function createLocaleCookieConfiguration(ArrayNodeDefinition $root)
+    {
+        $root
+            ->children()
+                ->arrayNode('locale_cookie')
+                    ->info('Cookie settings for locale cookie')
+                    ->isRequired()
+                    ->children()
+                        ->scalarNode('name')
+                            ->info('Name for the cookie')
+                            ->defaultValue('stepup_locale')
+                        ->end()
+                        ->scalarNode('domain')
+                            ->info('Domain the cookie is scoped to')
+                            ->defaultValue('surfconext.nl')
+                        ->end()
+                        ->integerNode('expire')
+                            ->info('Defines a specific number of seconds for when the browser should delete the cookie.')
+                            ->defaultValue(0)
+                        ->end()
+                        ->scalarNode('path')
+                            ->info('Path the cookie is scoped to')
+                            ->defaultValue('/')
+                        ->end()
+                        ->booleanNode('secure')
+                            ->info('Only transmit cookie over secure connections?')
+                            ->defaultValue(true)
+                        ->end()
+                        ->booleanNode('http_only')
+                            ->info('Directs browsers not to expose cookies through channels other than HTTP (and HTTPS) requests')
+                            ->defaultValue(true)
                         ->end()
                     ->end()
                 ->end()
