@@ -30,11 +30,11 @@ final class CookieHelper
     /**
      * @var Cookie
      */
-    private $cookie;
+    private $cookieSettings;
 
-    public function __construct(Cookie $cookie)
+    public function __construct(Cookie $cookieSettings)
     {
-        $this->cookie = $cookie;
+        $this->cookieSettings = $cookieSettings;
     }
 
     /**
@@ -60,12 +60,12 @@ final class CookieHelper
      */
     public function read(Request $request)
     {
-        if (!$request->cookies->has($this->cookie->getName())) {
+        if (!$request->cookies->has($this->cookieSettings->getName())) {
             return null;
         }
 
         return $this->createCookieWithValue(
-            $request->cookies->get($this->cookie->getName())
+            $request->cookies->get($this->cookieSettings->getName())
         );
     }
 
@@ -78,13 +78,13 @@ final class CookieHelper
     private function createCookieWithValue($value)
     {
         return new Cookie(
-            $this->cookie->getName(),
+            $this->cookieSettings->getName(),
             $value,
-            $this->cookie->getExpiresTime(),
-            $this->cookie->getPath(),
-            $this->cookie->getDomain(),
-            $this->cookie->isSecure(),
-            $this->cookie->isHttpOnly()
+            $this->cookieSettings->getExpiresTime(),
+            $this->cookieSettings->getPath(),
+            $this->cookieSettings->getDomain(),
+            $this->cookieSettings->isSecure(),
+            $this->cookieSettings->isHttpOnly()
         );
     }
 }
