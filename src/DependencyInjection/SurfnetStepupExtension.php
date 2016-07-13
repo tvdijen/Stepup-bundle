@@ -71,7 +71,7 @@ class SurfnetStepupExtension extends Extension
             $container->removeDefinition('surfnet_stepup.guzzle.gateway_api');
         }
 
-        if (!$config['local_cookie']['disabled']) {
+        if (!$config['locale_cookie']['disabled']) {
             $this->configureLocaleCookieSettings($config, $container);
         } else {
             $container->removeDefinition('surfnet_stepup.locale_cookie_helper');
