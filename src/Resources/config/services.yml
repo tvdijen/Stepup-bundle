@@ -2,7 +2,7 @@ services:
     surfnet_stepup.json_convertible_param_converter:
         class: Surfnet\StepupBundle\Request\JsonConvertibleParamConverter
         arguments:
-            - @validator
+            - "@validator"
         tags:
             - { name: request.param_converter, priority: -1, converter: surfnet_stepup.json_convertible }
 
@@ -14,7 +14,7 @@ services:
     surfnet_stepup.request.request_id:
         class: Surfnet\StepupBundle\Request\RequestId
         arguments:
-            - @surfnet_stepup.request.request_id_generator
+            - "@surfnet_stepup.request.request_id_generator"
 
     surfnet_stepup.request.request_id_generator:
         public: false
@@ -23,7 +23,7 @@ services:
     surfnet_stepup.listener.request_id_request_response_listener:
         class: Surfnet\StepupBundle\EventListener\RequestIdRequestResponseListener
         arguments:
-            - @surfnet_stepup.request.request_id
+            - "@surfnet_stepup.request.request_id"
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
@@ -31,12 +31,12 @@ services:
     surfnet_stepup.guzzle.request_id_injector:
         class: Surfnet\StepupBundle\Guzzle\Subscriber\GuzzleRequestIdInjector
         arguments:
-            - @surfnet_stepup.request.request_id
+            - "@surfnet_stepup.request.request_id"
 
     surfnet_stepup.monolog.request_id_processor:
         class: Surfnet\StepupBundle\Monolog\Processor\RequestIdProcessor
         arguments:
-            - @surfnet_stepup.request.request_id
+            - "@surfnet_stepup.request.request_id"
         tags:
             - { name: monolog.processor }
 
@@ -48,7 +48,7 @@ services:
 
     surfnet_stepup.monolog.server_name_processor:
         class: Surfnet\StepupBundle\Monolog\Processor\ServerNameProcessor
-        arguments: [ @request_stack ]
+        arguments: [ "@request_stack" ]
         tags:
             - { name: monolog.processor }
 
@@ -59,7 +59,7 @@ services:
     surfnet_stepup.monolog.full_message_exception_gelf_message_formatter:
         class: Surfnet\StepupBundle\Monolog\Formatter\FullMessageExceptionGelfMessageFormatter
         arguments:
-            - @surfnet_stepup.monolog.gelf_message_formatter
+            - "@surfnet_stepup.monolog.gelf_message_formatter"
 
     surfnet_stepup.monolog.json_formatter:
         class: Surfnet\StepupBundle\Monolog\Formatter\JsonFormatter
@@ -80,21 +80,21 @@ services:
         public: false
         class: Surfnet\StepupBundle\Service\GatewayApiSmsService
         arguments:
-            - @surfnet_stepup.guzzle.gateway_api
-            - @logger
+            - "@surfnet_stepup.guzzle.gateway_api"
+            - "@logger"
 
     surfnet_stepup.service.sms_second_factor:
         class: Surfnet\StepupBundle\Service\SmsSecondFactorService
         arguments:
             - '' # SMS service set in extension
-            - @surfnet_stepup.service.challenge_handler
+            - "@surfnet_stepup.service.challenge_handler"
             - '' # Originator set in extension
 
     surfnet_stepup.service.challenge_handler:
         public: false
         class: Surfnet\StepupBundle\Service\SmsSecondFactor\SessionSmsVerificationStateHandler
         arguments:
-            - @session
+            - "@session"
             - 'Surfnet/Stepup/SecondFactor/Sms:challenge'
             - {} # OTP expiry interval
             - 0  # Maximum OTP requests
@@ -109,19 +109,19 @@ services:
         class: Surfnet\StepupBundle\Form\ChoiceList\LocaleChoiceList
         arguments:
             - [] # See Extension
-            - @request_stack
+            - "@request_stack"
 
     surfnet_stepup.form.switch_locale:
         class: Surfnet\StepupBundle\Form\Type\SwitchLocaleType
         arguments:
-            - @surfnet_stepup.form.choice_list.locales
-            - @router
+            - "@surfnet_stepup.form.choice_list.locales"
+            - "@router"
         tags:
             - { name: form.type, alias: stepup_switch_locale }
 
     surfnet_stepup.twig.locale_extension:
         class: Surfnet\StepupBundle\Twig\LocaleExtension
-        arguments: [ @form.factory ]
+        arguments: [ "@form.factory" ]
         tags:
             - { name: twig.extension }
 
@@ -133,7 +133,7 @@ services:
     surfnet_stepup.locale_cookie_helper:
         class: Surfnet\StepupBundle\Http\CookieHelper
         arguments:
-          - @surfnet_stepup.locale_cookie_settings
+          - "@surfnet_stepup.locale_cookie_settings"
 
     surfnet_stepup.locale_cookie_settings:
         public: false
