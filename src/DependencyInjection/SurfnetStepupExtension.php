@@ -66,7 +66,7 @@ class SurfnetStepupExtension extends Extension
         if ($config['gateway_api']['enabled']) {
             $this->configureGatewayApiClient($config, $container);
         } else {
-            # Remove the Gateway API SMS service and its Guzzle client.
+            // Remove the Gateway API SMS service and its Guzzle client.
             $container->removeDefinition('surfnet_stepup.service.gateway_api_sms');
             $container->removeDefinition('surfnet_stepup.guzzle.gateway_api');
         }
@@ -119,7 +119,7 @@ class SurfnetStepupExtension extends Extension
      */
     private function configureGatewayApiClient(array $config, ContainerBuilder $container)
     {
-# Configure the Gateway API SMS service's Guzzle client.
+        // Configure the Gateway API SMS service's Guzzle client.
         $gatewayGuzzleOptions = [
             'base_url' => $config['gateway_api']['url'],
             'defaults' => [
