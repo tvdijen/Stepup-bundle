@@ -18,10 +18,6 @@
 
 namespace Surfnet\StepupBundle\DependencyInjection\Compiler;
 
-use GuzzleHttp\ClientInterface;
-use Surfnet\StepupBundle\DependencyInjection\Configuration;
-use Surfnet\StepupBundle\Guzzle\Subscriber\GuzzleRequestIdInjector;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -30,21 +26,20 @@ final class AttachRequestIdInjectorToGuzzleClientsPass implements CompilerPassIn
     public function process(ContainerBuilder $container)
     {
         $configs = $container->getExtensionConfig('surfnet_stepup');
-        $config = (new Processor())->processConfiguration(new Configuration(), $configs);
+        $config = $configs[0];
 
         // Attach Stepup request ID to outgoing requests of specific Guzzle clients
         if (!isset($config['attach_request_id_injector_to'])) {
             return;
         }
 
+        $guzzleClientRequestIDConfigurator = $container
+            ->getDefinition('surfnet_stepup.configurator.guzzle_request_id_configurator');
+
         foreach ($config['attach_request_id_injector_to'] as $guzzleServiceId) {
-            $container->getDefinition($guzzleServiceId)->setConfigurator(
-                function (ClientInterface $client) use ($container) {
-                    /** @var GuzzleRequestIdInjector $requestIdInjector */
-                    $requestIdInjector = $container->get('surfnet_stepup.guzzle.request_id_injector');
-                    $client->getEmitter()->attach($requestIdInjector);
-                }
-            );
+            $container
+                ->getDefinition($guzzleServiceId)
+                ->setConfigurator([$guzzleClientRequestIDConfigurator, 'configure']);
         }
     }
 }

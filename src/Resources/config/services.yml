@@ -139,3 +139,6 @@ services:
         public: false
         class: Symfony\Component\HttpFoundation\Cookie
         # Set from the extension
+
+    surfnet_stepup.configurator.guzzle_request_id_configurator:
+        class: Surfnet\StepupBundle\DependencyInjection\Configurator\GuzzleClientRequestIdConfigurator
