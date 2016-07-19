@@ -31,7 +31,7 @@ class RequestIdTest extends \PHPUnit_Framework_TestCase
         $requestId->set('abcdef');
     }
 
-    public function testItDoesNotAllowOverwritingTheRequestId()
+    public function testItDoesNotAllowOverwritingTheRequestIdByDefault()
     {
         $this->setExpectedException('LogicException', 'not overwrite');
 
@@ -42,6 +42,32 @@ class RequestIdTest extends \PHPUnit_Framework_TestCase
         $requestId->set('abcdef');
     }
 
+    public function testOverwritingTheRequestIdAfterSettingItIsAllowedIfForced()
+    {
+        $generator = m::mock('Surfnet\StepupBundle\Request\RequestIdGenerator');
+
+        $requestId = new RequestId($generator);
+
+        $requestId->set('12345');
+        $requestId->set('abcde', true);
+
+        $this->assertEquals('abcde', $requestId->get());
+    }
+
+    public function testOverwritingTheRequestIdAfterHavingItGeneratedIsAllowedIfForced()
+    {
+        $generator = m::mock('Surfnet\StepupBundle\Request\RequestIdGenerator')
+            ->shouldReceive('generateRequestId')->once()->andReturn('12345')
+            ->getMock();
+
+        $requestId = new RequestId($generator);
+
+        $requestId->get(); // trigger a generation
+        $requestId->set('abcde', true);
+
+        $this->assertEquals('abcde', $requestId->get());
+    }
+
     public function testItGeneratesARequestIdIfItIsNotSet()
     {
         $generator = m::mock('Surfnet\StepupBundle\Request\RequestIdGenerator')
@@ -50,6 +76,6 @@ class RequestIdTest extends \PHPUnit_Framework_TestCase
 
         $requestId = new RequestId($generator);
 
-        $this->assertEquals('abcdef', $requestId->get('abcdef'));
+        $this->assertEquals('abcdef', $requestId->get());
     }
 }
