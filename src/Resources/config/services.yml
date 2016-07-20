@@ -95,7 +95,7 @@ services:
         class: Surfnet\StepupBundle\Service\SmsSecondFactor\SessionSmsVerificationStateHandler
         arguments:
             - "@session"
-            - 'Surfnet/Stepup/SecondFactor/Sms:challenge'
+            - "Surfnet/Stepup/SecondFactor/Sms:challenge"
             - {} # OTP expiry interval
             - 0  # Maximum OTP requests
 
@@ -139,3 +139,8 @@ services:
         public: false
         class: Symfony\Component\HttpFoundation\Cookie
         # Set from the extension
+
+    surfnet_stepup.configurator.guzzle_request_id_configurator:
+        class: Surfnet\StepupBundle\DependencyInjection\Configurator\GuzzleClientRequestIdConfigurator
+        arguments:
+            - "@surfnet_stepup.guzzle.request_id_injector"
