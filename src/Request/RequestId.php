@@ -60,7 +60,7 @@ class RequestId
     /**
      * We allow overwriting the RequestId so that we can inject a RequestId from a header when log statements already
      * have been made - which would cause an exception otherwise. The use-case here is the Stepup-Middleware
-     * application, this application receives API-calls, but by then a logs messages have already been written.
+     * application, this application receives API-calls, but by then a log messages have already been written.
      * However, for the sake of correlation we do want to use the log to show the correct request_id when actually
      * handling the request.
      *
