@@ -54,59 +54,29 @@ class SurfnetStepupExtension extends Extension
             $container->removeDefinition('surfnet_stepup.service.challenge_handler');
             $container->removeDefinition('surfnet_stepup.service.sms_second_factor');
         } else {
-            $smsSecondFactorService = $container->getDefinition('surfnet_stepup.service.sms_second_factor');
-            $smsSecondFactorService->replaceArgument(2, $config['sms']['originator']);
-
-            $container
-                ->getDefinition('surfnet_stepup.service.challenge_handler')
-                ->replaceArgument(2, $config['sms']['otp_expiry_interval'])
-                ->replaceArgument(3, $config['sms']['maximum_otp_requests']);
-
-            $container
-                ->getDefinition('surfnet_stepup.service.sms_second_factor')
-                ->replaceArgument(0, new Reference($config['sms']['service']));
+            $this->configureSmsSecondFactorServices($config, $container);
 
             if (!$config['gateway_api']['enabled'] && $config['sms']['service'] === Configuration::DEFAULT_SMS_SERVICE) {
-                throw new RuntimeException('The gateway API is not enabled and no replacement SMS service is configured');
+                throw new RuntimeException(
+                    'The gateway API is not enabled and no replacement SMS service is configured'
+                );
             }
         }
 
         if ($config['gateway_api']['enabled']) {
-            # Configure the Gateway API SMS service's Guzzle client.
-            $gatewayGuzzleOptions = [
-                'base_url' => $config['gateway_api']['url'],
-                'defaults' => [
-                    'auth'    => [
-                        $config['gateway_api']['credentials']['username'],
-                        $config['gateway_api']['credentials']['password'],
-                        'basic'
-                    ],
-                    'headers' => [
-                        'Accept' => 'application/json'
-                    ]
-                ]
-            ];
-
-            $gatewayGuzzle = $container->getDefinition('surfnet_stepup.guzzle.gateway_api');
-            $gatewayGuzzle->replaceArgument(0, $gatewayGuzzleOptions);
+            $this->configureGatewayApiClient($config, $container);
         } else {
-            # Remove the Gateway API SMS service and its Guzzle client.
+            // Remove the Gateway API SMS service and its Guzzle client.
             $container->removeDefinition('surfnet_stepup.service.gateway_api_sms');
             $container->removeDefinition('surfnet_stepup.guzzle.gateway_api');
         }
 
-        $container->getDefinition('surfnet_stepup.locale_cookie_settings')
-            ->setArguments(
-                [
-                    $config['locale_cookie']['name'],
-                    null,
-                    $config['locale_cookie']['expire'],
-                    $config['locale_cookie']['path'],
-                    $config['locale_cookie']['domain'],
-                    $config['locale_cookie']['secure'],
-                    $config['locale_cookie']['http_only'],
-                ]
-            );
+        if ($config['locale_cookie']['enabled']) {
+            $this->configureLocaleCookieSettings($config, $container);
+        } else {
+            $container->removeDefinition('surfnet_stepup.locale_cookie_helper');
+            $container->removeDefinition('surfnet_stepup.locale_cookie_settings');
+        }
 
         $container->getDefinition('surfnet_stepup.form.choice_list.locales')
             ->replaceArgument(0, $container->getParameter('locales'));
@@ -121,5 +91,69 @@ class SurfnetStepupExtension extends Extension
         $loa3 = new Definition('Surfnet\StepupBundle\Value\Loa', [Loa::LOA_3, $loaDefinitions['loa3']]);
 
         $loaService->addArgument([$loa1, $loa2, $loa3]);
+    }
+
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     */
+    private function configureLocaleCookieSettings(array $config, ContainerBuilder $container)
+    {
+        $container->getDefinition('surfnet_stepup.locale_cookie_settings')
+            ->setArguments(
+                [
+                    $config['locale_cookie']['name'],
+                    null,
+                    $config['locale_cookie']['expire'],
+                    $config['locale_cookie']['path'],
+                    $config['locale_cookie']['domain'],
+                    $config['locale_cookie']['secure'],
+                    $config['locale_cookie']['http_only'],
+                ]
+            );
+    }
+
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     */
+    private function configureGatewayApiClient(array $config, ContainerBuilder $container)
+    {
+        // Configure the Gateway API SMS service's Guzzle client.
+        $gatewayGuzzleOptions = [
+            'base_url' => $config['gateway_api']['url'],
+            'defaults' => [
+                'auth'    => [
+                    $config['gateway_api']['credentials']['username'],
+                    $config['gateway_api']['credentials']['password'],
+                    'basic'
+                ],
+                'headers' => [
+                    'Accept' => 'application/json'
+                ]
+            ]
+        ];
+
+        $gatewayGuzzle = $container->getDefinition('surfnet_stepup.guzzle.gateway_api');
+        $gatewayGuzzle->replaceArgument(0, $gatewayGuzzleOptions);
+    }
+
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     */
+    private function configureSmsSecondFactorServices(array $config, ContainerBuilder $container)
+    {
+        $smsSecondFactorService = $container->getDefinition('surfnet_stepup.service.sms_second_factor');
+        $smsSecondFactorService->replaceArgument(2, $config['sms']['originator']);
+
+        $container
+            ->getDefinition('surfnet_stepup.service.challenge_handler')
+            ->replaceArgument(2, $config['sms']['otp_expiry_interval'])
+            ->replaceArgument(3, $config['sms']['maximum_otp_requests']);
+
+        $container
+            ->getDefinition('surfnet_stepup.service.sms_second_factor')
+            ->replaceArgument(0, new Reference($config['sms']['service']));
     }
 }

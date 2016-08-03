@@ -221,8 +221,8 @@ class Configuration implements ConfigurationInterface
         $root
             ->children()
                 ->arrayNode('locale_cookie')
+                    ->canBeDisabled()
                     ->info('Cookie settings for locale cookie')
-                    ->isRequired()
                     ->children()
                         ->scalarNode('name')
                             ->info('Name for the cookie')

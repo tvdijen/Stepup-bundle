@@ -57,9 +57,19 @@ class RequestId
         return $this->requestId;
     }
 
-    public function set($requestId)
+    /**
+     * We allow overwriting the RequestId so that we can inject a RequestId from a header when log statements already
+     * have been made - which would cause an exception otherwise. The use-case here is the Stepup-Middleware
+     * application, this application receives API-calls, but by then log messages have already been written.
+     * However, for the sake of correlation we do want to use the log to show the correct request_id when actually
+     * handling the request.
+     *
+     * @param string $requestId
+     * @param bool   $allowOverwrite
+     */
+    public function set($requestId, $allowOverwrite = false)
     {
-        if ($this->requestId !== null) {
+        if ($this->requestId !== null && !$allowOverwrite) {
             throw new \LogicException('May not overwrite request ID.');
         }
 
