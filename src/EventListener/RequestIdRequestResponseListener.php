@@ -56,7 +56,7 @@ class RequestIdRequestResponseListener
             return;
         }
 
-        $this->requestId->set($headers->get(self::HEADER_NAME, null, true));
+        $this->requestId->set($headers->get(self::HEADER_NAME, null, true), true);
     }
 
     /**

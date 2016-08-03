@@ -18,8 +18,16 @@
 
 namespace Surfnet\StepupBundle;
 
+use Surfnet\StepupBundle\DependencyInjection\Compiler\AttachRequestIdInjectorToGuzzleClientsPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class SurfnetStepupBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new AttachRequestIdInjectorToGuzzleClientsPass());
+    }
 }
