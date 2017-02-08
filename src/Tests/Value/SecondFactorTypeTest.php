@@ -97,7 +97,7 @@ final class SecondFactorTypeTest extends TestCase
     {
         $this->assertTrue(
             (new SecondFactorType('yubikey'))->hasEqualOrHigherLoaComparedTo(new SecondFactorType('sms')),
-            'yubiykey >= sms'
+            'yubikey >= sms'
         );
         $this->assertTrue(
             (new SecondFactorType('sms'))->hasEqualOrHigherLoaComparedTo(new SecondFactorType('sms')),
