@@ -2,6 +2,9 @@
 VERSION 1  RELEASE 1.0
 ======================
 
+   Version 1.6 - Added method to expose available second factor types
+      08/02/2017 17:36  1.6.0  initial release
+
    Version 1.5 - Improved requestid handling
       03/08/2016 09:45  1.5.0  initial release
 
