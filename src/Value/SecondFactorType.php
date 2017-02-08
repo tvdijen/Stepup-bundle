@@ -64,6 +64,14 @@ final class SecondFactorType implements JsonSerializable
     }
 
     /**
+     * @return string[]
+     */
+    public static function getAllowedSecondFactorTypes()
+    {
+        return array_keys(self::$loaLevelTypeMap);
+    }
+
+    /**
      * @param Loa $loa
      * @return bool
      */
