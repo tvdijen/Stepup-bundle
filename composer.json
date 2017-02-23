@@ -18,7 +18,7 @@
         "ext-gmp": "*",
         "ext-openssl": "*",
         "graylog2/gelf-php": "^1.5",
-        "guzzlehttp/guzzle": "~4",
+        "guzzlehttp/guzzle": "^6.0",
         "monolog/monolog": "~1.11",
         "sensio/framework-extra-bundle": "~3",
         "symfony/config": "^2.7",
