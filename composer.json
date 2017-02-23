@@ -30,7 +30,6 @@
         "symfony/validator": "^2.7"
     },
     "require-dev": {
-        "ibuildings/qa-tools": "~1.1",
         "mockery/mockery": "0.9.*",
         "liip/rmt": "1.1.*"
     }
