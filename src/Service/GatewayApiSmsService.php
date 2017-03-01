@@ -18,9 +18,10 @@
 
 namespace Surfnet\StepupBundle\Service;
 
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
 use Surfnet\StepupBundle\Command\SendSmsCommand;
+use Surfnet\StepupBundle\Http\JsonHelper;
 
 /**
  * Sends SMSes by calling the Gateway API over HTTP.
@@ -28,7 +29,7 @@ use Surfnet\StepupBundle\Command\SendSmsCommand;
 class GatewayApiSmsService implements SmsService
 {
     /**
-     * @var ClientInterface
+     * @var Client
      */
     private $guzzleClient;
 
@@ -38,10 +39,10 @@ class GatewayApiSmsService implements SmsService
     private $logger;
 
     /**
-     * @param ClientInterface $guzzleClient A Guzzle client configured with the SMS API base URL and authentication.
+     * @param Client $guzzleClient A Guzzle client configured with the SMS API base URL and authentication.
      * @param LoggerInterface $logger
      */
-    public function __construct(ClientInterface $guzzleClient, LoggerInterface $logger)
+    public function __construct(Client $guzzleClient, LoggerInterface $logger)
     {
         $this->guzzleClient = $guzzleClient;
         $this->logger = $logger;
@@ -72,7 +73,7 @@ class GatewayApiSmsService implements SmsService
         }
 
         try {
-            $result = $response->json();
+            $result = JsonHelper::decode((string) $response->getBody());
         } catch (\RuntimeException $e) {
             $this->logger->error('SMS sending failed; server responded with malformed JSON.');
 
