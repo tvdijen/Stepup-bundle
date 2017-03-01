@@ -29,7 +29,7 @@ services:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
 
     surfnet_stepup.guzzle.request_id_injector:
-        class: Surfnet\StepupBundle\Guzzle\Subscriber\GuzzleRequestIdInjector
+        class: Surfnet\StepupBundle\Guzzle\Middleware\GuzzleRequestIdInjector
         arguments:
             - "@surfnet_stepup.request.request_id"
 
@@ -140,7 +140,3 @@ services:
         class: Symfony\Component\HttpFoundation\Cookie
         # Set from the extension
 
-    surfnet_stepup.configurator.guzzle_request_id_configurator:
-        class: Surfnet\StepupBundle\DependencyInjection\Configurator\GuzzleClientRequestIdConfigurator
-        arguments:
-            - "@surfnet_stepup.guzzle.request_id_injector"

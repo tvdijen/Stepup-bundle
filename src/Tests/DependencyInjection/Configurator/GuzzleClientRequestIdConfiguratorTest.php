@@ -19,27 +19,32 @@
 namespace Surfnet\StepupBundle\DependencyInjection\Configurator;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Event\EmitterInterface;
+use GuzzleHttp\HandlerStack;
 use Mockery as m;
 use PHPUnit_Framework_TestCase as UnitTest;
-use Surfnet\StepupBundle\Guzzle\Subscriber\GuzzleRequestIdInjector;
+use Surfnet\StepupBundle\Guzzle\Middleware\GuzzleRequestIdInjector;
 
 class GuzzleClientRequestIdConfiguratorTest extends UnitTest
 {
+    /**
+     * @group Configurator
+     * @group Guzzle
+     */
     public function testTheRequestIdInjectorIsAttachedToTheGuzzleClient()
     {
         $requestIdInjector = m::mock(GuzzleRequestIdInjector::class);
         $guzzleClientRequestIdConfigurator = new GuzzleClientRequestIdConfigurator($requestIdInjector);
 
-        $emitter = m::mock(EmitterInterface::class)
-            ->shouldReceive('attach')
+        $handlerStack = m::mock(HandlerStack::class)
+            ->shouldReceive('push')
             ->once()
             ->withArgs([$requestIdInjector])
             ->getMock();
         $client = m::mock(Client::class)
-            ->shouldReceive('getEmitter')
+            ->shouldReceive('getConfig')
             ->once()
-            ->andReturn($emitter)
+            ->withArgs(['handler'])
+            ->andReturn($handlerStack)
             ->getMock();
 
         $guzzleClientRequestIdConfigurator->configure($client);
