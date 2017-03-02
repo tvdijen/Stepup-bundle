@@ -60,7 +60,7 @@ class GatewayApiSmsService implements SmsService
                 'body'       => $command->body
             ],
         ];
-        $response = $this->guzzleClient->post('api/send-sms', ['json' => $body, 'exceptions' => false]);
+        $response = $this->guzzleClient->post('api/send-sms', ['json' => $body]);
         $statusCode = $response->getStatusCode();
 
         if ($statusCode != 200) {

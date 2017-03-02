@@ -134,7 +134,8 @@ class SurfnetStepupExtension extends Extension
             'headers' => [
                 'Accept' => 'application/json'
             ],
-            'handler' => $handlerStack
+            'handler' => $handlerStack,
+            'http_errors' => false
         ];
 
         $gatewayGuzzle = $container->getDefinition('surfnet_stepup.guzzle.gateway_api');
