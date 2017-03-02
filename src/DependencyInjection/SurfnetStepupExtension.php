@@ -121,10 +121,7 @@ class SurfnetStepupExtension extends Extension
      */
     private function configureGatewayApiClient(array $config, ContainerBuilder $container)
     {
-        $handlerStack = new HandlerStack;
-        $handlerStack->push(Middleware::redirect(), 'allow_redirects');
-        $handlerStack->push(Middleware::cookies(), 'cookies');
-        $handlerStack->push(Middleware::prepareBody(), 'prepare_body');
+        $handlerStack = $container->getDefinition('surfnet_stepup.guzzle.handler_stack');
 
         // Configure the Gateway API SMS service's Guzzle client.
         $gatewayGuzzleOptions = [
