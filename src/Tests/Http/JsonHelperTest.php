@@ -16,7 +16,7 @@ class JsonHelperTest extends TestCase
      * @dataProvider nonStringProvider
      * @param $nonString
      */
-    public function json_helper_can_only_decode_strings($nonString)
+    public function jsonHelperCanOnlyDecodeStrings($nonString)
     {
         $this->setExpectedException(InvalidArgumentException::class);
         JsonHelper::decode($nonString);
@@ -26,7 +26,7 @@ class JsonHelperTest extends TestCase
      * @test
      * @group json
      */
-    public function json_helper_decodes_strings_to_arrays()
+    public function jsonHelperDecodesStringsToArrays()
     {
         $expectedDecodedResult = ['hello' => 'world'];
         $json                  = '{ "hello" : "world" }';
@@ -38,7 +38,7 @@ class JsonHelperTest extends TestCase
      * @test
      * @group json
      */
-    public function json_helper_throws_an_exception_when_there_is_a_syntax_error()
+    public function jsonHelperThrowsAnExceptionWhenThereIsASyntaxError()
     {
         $this->setExpectedException(JsonException::class, 'Syntax error');
         $jsonWithMissingDoubleQuotes = '{ hello : world }';
