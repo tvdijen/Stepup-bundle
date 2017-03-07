@@ -18,6 +18,8 @@
 
 namespace Surfnet\StepupBundle\DependencyInjection;
 
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use Surfnet\StepupBundle\Value\Loa;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
@@ -119,19 +121,21 @@ class SurfnetStepupExtension extends Extension
      */
     private function configureGatewayApiClient(array $config, ContainerBuilder $container)
     {
+        $handlerStack = $container->getDefinition('surfnet_stepup.guzzle.handler_stack');
+
         // Configure the Gateway API SMS service's Guzzle client.
         $gatewayGuzzleOptions = [
-            'base_url' => $config['gateway_api']['url'],
-            'defaults' => [
-                'auth'    => [
-                    $config['gateway_api']['credentials']['username'],
-                    $config['gateway_api']['credentials']['password'],
-                    'basic'
-                ],
-                'headers' => [
-                    'Accept' => 'application/json'
-                ]
-            ]
+            'base_uri' => $config['gateway_api']['url'],
+            'auth'    => [
+                $config['gateway_api']['credentials']['username'],
+                $config['gateway_api']['credentials']['password'],
+                'basic'
+            ],
+            'headers' => [
+                'Accept' => 'application/json'
+            ],
+            'handler' => $handlerStack,
+            'http_errors' => false
         ];
 
         $gatewayGuzzle = $container->getDefinition('surfnet_stepup.guzzle.gateway_api');

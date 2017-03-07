@@ -18,7 +18,7 @@
         "ext-gmp": "*",
         "ext-openssl": "*",
         "graylog2/gelf-php": "^1.5",
-        "guzzlehttp/guzzle": "~4",
+        "guzzlehttp/guzzle": "^6.0",
         "monolog/monolog": "~1.11",
         "sensio/framework-extra-bundle": "~3",
         "symfony/config": "^2.7",
@@ -30,8 +30,12 @@
         "symfony/validator": "^2.7"
     },
     "require-dev": {
-        "ibuildings/qa-tools": "~1.1",
         "mockery/mockery": "0.9.*",
-        "liip/rmt": "1.1.*"
+        "liip/rmt": "1.1.*",
+        "phpmd/phpmd": "^2.0",
+        "phpunit/phpunit": "^4.0",
+        "sensiolabs/security-checker": "^2.0",
+        "sebastian/phpcpd": "^2.0",
+        "squizlabs/php_codesniffer": "^1.0"
     }
 }
