@@ -2,6 +2,9 @@
 VERSION 1  RELEASE 1.0
 ======================
 
+   Version 1.7 - Updated Guzzle to Guzzle 6
+      07/03/2017 14:44  1.7.0  initial release
+
    Version 1.6 - Added method to expose available second factor types
       08/02/2017 17:36  1.6.0  initial release
 
