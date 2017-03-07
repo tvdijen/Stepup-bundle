@@ -18,7 +18,7 @@
 namespace Surfnet\StepupBundle\DependencyInjection\Configurator;
 
 use GuzzleHttp\Client;
-use Surfnet\StepupBundle\Guzzle\Subscriber\GuzzleRequestIdInjector;
+use Surfnet\StepupBundle\Guzzle\Middleware\GuzzleRequestIdInjector;
 
 final class GuzzleClientRequestIdConfigurator
 {
@@ -34,6 +34,7 @@ final class GuzzleClientRequestIdConfigurator
 
     public function configure(Client $client)
     {
-        $client->getEmitter()->attach($this->guzzleRequestIdInjector);
+        $handlerStack = $client->getConfig('handler');
+        $handlerStack->push($this->guzzleRequestIdInjector);
     }
 }

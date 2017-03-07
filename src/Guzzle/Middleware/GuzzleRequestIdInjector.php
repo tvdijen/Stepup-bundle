@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2014 SURFnet bv
+ * Copyright 2017 SURFnet B.V.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,16 @@
  * limitations under the License.
  */
 
-namespace Surfnet\StepupBundle\Guzzle\Subscriber;
+namespace Surfnet\StepupBundle\Guzzle\Middleware;
 
-use GuzzleHttp\Event\BeforeEvent;
-use GuzzleHttp\Event\SubscriberInterface;
+use Psr\Http\Message\RequestInterface;
 use Surfnet\StepupBundle\EventListener\RequestIdRequestResponseListener;
 use Surfnet\StepupBundle\Request\RequestId;
 
 /**
- * Injects the X-Stepup-Request-Id in every Guzzle request.
+ * Middleware injecting the Stepup Request Id in every Guzzle request.
  */
-class GuzzleRequestIdInjector implements SubscriberInterface
+class GuzzleRequestIdInjector
 {
     /**
      * @var RequestId
@@ -41,16 +40,11 @@ class GuzzleRequestIdInjector implements SubscriberInterface
         $this->requestId = $requestId;
     }
 
-    public function getEvents()
+    public function __invoke(callable $handler)
     {
-        return ['before' => ['addRequestIdHeader']];
-    }
-
-    /**
-     * @param BeforeEvent $event
-     */
-    public function addRequestIdHeader(BeforeEvent $event)
-    {
-        $event->getRequest()->addHeader(RequestIdRequestResponseListener::HEADER_NAME, $this->requestId->get());
+        return function (RequestInterface $request, array $options) use ($handler) {
+            $request = $request->withHeader(RequestIdRequestResponseListener::HEADER_NAME, $this->requestId->get());
+            return $handler($request, $options);
+        };
     }
 }
