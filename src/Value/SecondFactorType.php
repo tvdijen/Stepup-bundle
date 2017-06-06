@@ -19,23 +19,10 @@
 namespace Surfnet\StepupBundle\Value;
 
 use JsonSerializable;
-use Surfnet\StepupBundle\Exception\DomainException;
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyMethods) All methods are relevant and simple.
- * @SuppressWarnings(PHPMD.TooManyPublicMethods) All methods are relevant and simple.
- */
 final class SecondFactorType implements JsonSerializable
 {
-    private static $loaLevelTypeMap = [
-        'sms'       => Loa::LOA_2,
-        'tiqr'      => Loa::LOA_2,
-        'yubikey'   => Loa::LOA_3,
-        'u2f'       => Loa::LOA_3,
-        'biometric' => Loa::LOA_3,
-    ];
-
     /**
      * @var string
      */
@@ -49,62 +36,7 @@ final class SecondFactorType implements JsonSerializable
         if (!is_string($type)) {
             throw InvalidArgumentException::invalidType('string', 'type', $type);
         }
-
-        if (!isset(self::$loaLevelTypeMap[$type])) {
-            throw new DomainException(
-                sprintf(
-                    "Invalid second factor type, got '%s', expected one of '%s'",
-                    $type,
-                    join(',', array_keys(self::$loaLevelTypeMap))
-                )
-            );
-        }
-
         $this->type = $type;
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getAvailableSecondFactorTypes()
-    {
-        return array_keys(self::$loaLevelTypeMap);
-    }
-
-    /**
-     * @param Loa $loa
-     * @return bool
-     */
-    public function canSatisfy(Loa $loa)
-    {
-        return $loa->levelIsLowerOrEqualTo($this->getLevel());
-    }
-
-    /**
-     * @param Loa $loa
-     * @return bool
-     */
-    public function isSatisfiedBy(Loa $loa)
-    {
-        return $loa->levelIsHigherOrEqualTo($this->getLevel());
-    }
-
-    /**
-     * @param self $other
-     * @return bool
-     */
-    public function hasEqualOrHigherLoaComparedTo(self $other)
-    {
-        return $this->getLevel() >= $other->getLevel();
-    }
-
-    /**
-     * @param self $other
-     * @return bool
-     */
-    public function hasEqualOrLowerLoaComparedTo(self $other)
-    {
-        return $this->getLevel() <= $other->getLevel();
     }
 
     /**
@@ -172,14 +104,6 @@ final class SecondFactorType implements JsonSerializable
     public function getSecondFactorType()
     {
         return $this->type;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLevel()
-    {
-        return self::$loaLevelTypeMap[$this->type];
     }
 
     /**
