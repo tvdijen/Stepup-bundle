@@ -59,17 +59,6 @@ final class SecondFactorTypeTest extends TestCase
 
     /**
      * @test
-     * @group value
-     *
-     * @expectedException \Surfnet\StepupBundle\Exception\DomainException
-     */
-    public function it_doesnt_accept_an_invalid_type()
-    {
-        new SecondFactorType('rosemary');
-    }
-
-    /**
-     * @test
      */
     public function its_equality_is_determined_by_its_type()
     {
@@ -88,28 +77,5 @@ final class SecondFactorTypeTest extends TestCase
         $this->assertTrue((new SecondFactorType('biometric'))->isBiometric());
         $this->assertTrue((new SecondFactorType('biometric'))->isGssf());
         $this->assertTrue((new SecondFactorType('u2f'))->isU2f());
-    }
-
-    /**
-     * @test
-     */
-    public function they_can_be_compared()
-    {
-        $this->assertTrue(
-            (new SecondFactorType('yubikey'))->hasEqualOrHigherLoaComparedTo(new SecondFactorType('sms')),
-            'yubikey >= sms'
-        );
-        $this->assertTrue(
-            (new SecondFactorType('sms'))->hasEqualOrHigherLoaComparedTo(new SecondFactorType('sms')),
-            'sms >= sms'
-        );
-        $this->assertTrue(
-            (new SecondFactorType('sms'))->hasEqualOrLowerLoaComparedTo(new SecondFactorType('yubikey')),
-            'sms <= yubikey'
-        );
-        $this->assertTrue(
-            (new SecondFactorType('sms'))->hasEqualOrLowerLoaComparedTo(new SecondFactorType('sms')),
-            'sms <= sms'
-        );
     }
 }
