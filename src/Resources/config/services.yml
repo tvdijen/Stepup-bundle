@@ -100,7 +100,6 @@ services:
             - 0  # Maximum OTP requests
 
     surfnet_stepup.service.second_factor_type:
-        public: false
         class: Surfnet\StepupBundle\Service\SecondFactorTypeService
         arguments:
             - "%enabled_generic_second_factors%"
