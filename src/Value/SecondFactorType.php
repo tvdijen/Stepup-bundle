@@ -89,16 +89,6 @@ final class SecondFactorType implements JsonSerializable
     }
 
     /**
-     * Returns whether this type is one of the Generic SAML Second Factor types.
-     *
-     * @return bool
-     */
-    public function isGssf()
-    {
-        return $this->type === 'tiqr' || $this->type === 'biometric';
-    }
-
-    /**
      * @return string
      */
     public function getSecondFactorType()
