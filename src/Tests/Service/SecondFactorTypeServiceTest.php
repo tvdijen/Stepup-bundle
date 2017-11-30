@@ -158,7 +158,23 @@ class SecondFactorTypeServiceTest extends TestCase
         $this->assertTrue($service->hasEqualOrLowerLoaComparedTo($yubikey, $biometric));
         $this->assertTrue($service->hasEqualOrLowerLoaComparedTo($sms, $sms));
     }
-    
+
+    /**
+     * @group service
+     */
+    public function testItCanDetermineSecondFactorTypeIsGssf()
+    {
+        $service = new SecondFactorTypeService($this->getAvailableSecondFactorTypes());
+
+        $yubikey = new SecondFactorType('yubikey');
+        $tiqr = new SecondFactorType('tiqr');
+        $bogus = new SecondFactorType('i-dont-exist');
+
+        $this->assertTrue($service->isGssf($tiqr), 'Expected Tiqr to be Gssf');
+        $this->assertFalse($service->isGssf($yubikey), 'Expected Yubikey not to be Gssf');
+        $this->assertFalse($service->isGssf($bogus), 'Expected Bogus token not to be Gssf');
+    }
+
     private function getAvailableSecondFactorTypes()
     {
         return [

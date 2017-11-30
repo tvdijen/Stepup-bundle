@@ -54,9 +54,17 @@ class SecondFactorTypeService
     public function getAvailableSecondFactorTypes()
     {
         return array_merge(
-            $this->gssfConfig->getSecondFactorTypes(),
+            $this->getAvailableGssfSecondFactorTypes(),
             array_keys($this->loaLevelTypeMap)
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAvailableGssfSecondFactorTypes()
+    {
+        return $this->gssfConfig->getSecondFactorTypes();
     }
 
     /**
@@ -119,5 +127,10 @@ class SecondFactorTypeService
                 $secondFactorType->getSecondFactorType()
             )
         );
+    }
+
+    public function isGssf(SecondFactorType $secondFactorType)
+    {
+        return in_array($secondFactorType->__toString(), $this->getAvailableGssfSecondFactorTypes());
     }
 }
