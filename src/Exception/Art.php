@@ -33,15 +33,6 @@ class Art
     }
 
     /**
-     * @param FlattenException $exception
-     * @return string
-     */
-    public static function forFlattenException(FlattenException $exception)
-    {
-        return self::calculateArt($exception->getClass(), $exception->getMessage());
-    }
-
-    /**
      * @param string $className
      * @param string $message
      * @return string
