@@ -230,7 +230,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->scalarNode('domain')
                             ->info('Domain the cookie is scoped to')
-                            ->defaultValue('surfconext.nl')
+                            ->defaultValue('example.org')
                         ->end()
                         ->integerNode('expire')
                             ->info('Defines a specific number of seconds for when the browser should delete the cookie.')
