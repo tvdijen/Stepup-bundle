@@ -67,25 +67,9 @@ final class SecondFactorType implements JsonSerializable
     /**
      * @return bool
      */
-    public function isTiqr()
-    {
-        return $this->type === 'tiqr';
-    }
-
-    /**
-     * @return bool
-     */
     public function isU2f()
     {
         return $this->type === 'u2f';
-    }
-
-    /**
-     * @return bool
-     */
-    public function isBiometric()
-    {
-        return $this->type === 'biometric';
     }
 
     /**
