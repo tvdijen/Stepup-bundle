@@ -153,3 +153,6 @@ services:
     surfnet_stepup.guzzle.handler_stack:
         class: GuzzleHttp\HandlerStack
         factory: ['GuzzleHttp\HandlerStack', create]
+
+    surfnet_stepup.provider.collection:
+        class: Surfnet\StepupBundle\Value\Provider\ViewConfigCollection
