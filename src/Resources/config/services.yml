@@ -104,6 +104,12 @@ services:
         arguments:
             - "%enabled_generic_second_factors%"
 
+    surfnet_stepup.service.second_factor_type_translator:
+        class: Surfnet\StepupBundle\Service\SecondFactorTypeTranslationService
+        arguments:
+            - "@surfnet_stepup.provider.collection"
+            - "@translator"
+
     surfnet_stepup.guzzle.gateway_api:
         public: false
         class: GuzzleHttp\Client
@@ -153,3 +159,6 @@ services:
     surfnet_stepup.guzzle.handler_stack:
         class: GuzzleHttp\HandlerStack
         factory: ['GuzzleHttp\HandlerStack', create]
+
+    surfnet_stepup.provider.collection:
+        class: Surfnet\StepupBundle\Value\Provider\ViewConfigCollection
