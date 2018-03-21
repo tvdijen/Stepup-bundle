@@ -33,21 +33,34 @@ class Art
     }
 
     /**
-     * @param FlattenException $exception
-     * @return string
-     */
-    public static function forFlattenException(FlattenException $exception)
-    {
-        return self::calculateArt($exception->getClass(), $exception->getMessage());
-    }
-
-    /**
      * @param string $className
      * @param string $message
      * @return string
      */
     private static function calculateArt($className, $message)
     {
-        return substr(abs(crc32(md5($className . $message))), 0, 4);
+        $message = self::stripVariableArgumentsFromMessage($message);
+
+        return substr(abs(crc32(md5($className . $message))), 0, 5);
+    }
+
+    /**
+     * Strip variable arguments from exception messages.
+     *
+     * Some exception messages are formatted using sprintf, and result in a
+     * unique art-code for each distinct message. In order for the art-code to
+     * be useful it must be the same for each distinct error situation without
+     * taking into account variable parts of the message.
+     *
+     * This method strips all strings inside quotes. This is not perfect
+     * because it relies on sprintf arguments to always be quoted inside the
+     * message.
+     *
+     * @param $message
+     * @return string
+     */
+    private static function stripVariableArgumentsFromMessage($message)
+    {
+        return preg_replace('#".*"|\'.*\'#', '', $message);
     }
 }

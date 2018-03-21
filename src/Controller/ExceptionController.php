@@ -18,16 +18,35 @@
 
 namespace Surfnet\StepupBundle\Controller;
 
+use DateTime;
+use Exception;
+use SAML2\Response\Exception\InvalidResponseException;
+use SAML2\Response\Exception\PreconditionNotMetException;
+use Surfnet\SamlBundle\Http\Exception\AuthnFailedSamlResponseException;
+use Surfnet\SamlBundle\Http\Exception\SignatureValidationFailedException;
+use Surfnet\SamlBundle\Http\Exception\UnknownServiceProviderException;
+use Surfnet\SamlBundle\Http\Exception\UnsignedRequestException;
+use Surfnet\SamlBundle\Http\Exception\UnsupportedSignatureException;
+use Surfnet\StepupBundle\EventListener\RequestIdRequestResponseListener;
 use Surfnet\StepupBundle\Exception\Art;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as FrameworkController;
-use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * @package Surfnet\StepupBundle\Controller
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects) Contains extensive mapping for exceptions
+ */
 class ExceptionController extends FrameworkController
 {
-    public function showAction(FlattenException $exception)
+    public function showAction(Request $request, Exception $exception)
     {
-        $statusCode = $exception->getStatusCode();
+        $statusCode = $this->getStatusCode($exception);
 
         if ($statusCode == 404) {
             $template = 'SurfnetStepupBundle:Exception:error404.html.twig';
@@ -35,11 +54,107 @@ class ExceptionController extends FrameworkController
             $template = 'SurfnetStepupBundle:Exception:error.html.twig';
         }
 
-        return $this->render($template, [
-            'exception' => $exception,
-            'art' => Art::forFlattenException($exception),
-            'statusCode' => $statusCode,
-            'statusText' => isset(Response::$statusTexts[$statusCode]) ? Response::$statusTexts[$statusCode] : '',
-        ]);
+        $response = new Response('', $statusCode);
+
+        $timestamp = (new DateTime)->format(DateTime::ISO8601);
+        $hostname  = $request->getHost();
+        $requestId = $request->headers->get(RequestIdRequestResponseListener::HEADER_NAME, '-');
+        $errorCode = Art::forException($exception);
+        $userAgent = $request->headers->get('User-Agent');
+        $ipAddress = $request->getClientIp();
+
+        return $this->render(
+            $template,
+            [
+                'timestamp'   => $timestamp,
+                'hostname'    => $hostname,
+                'request_id'  => $requestId,
+                'error_code'  => $errorCode,
+                'user_agent'  => $userAgent,
+                'ip_address'  => $ipAddress,
+            ] + $this->getPageTitleAndDescription($exception),
+            $response
+        );
+    }
+
+    /**
+     * @param Exception $exception
+     * @return int HTTP status code
+     */
+    protected function getStatusCode(Exception $exception)
+    {
+        if ($exception instanceof AuthenticationException ||
+            $exception instanceof InvalidResponseException) {
+            return Response::HTTP_UNAUTHORIZED;
+        }
+
+        if ($exception instanceof AccessDeniedException ||
+            $exception instanceof PreconditionNotMetException) {
+            return Response::HTTP_FORBIDDEN;
+        }
+
+        if ($exception instanceof HttpExceptionInterface) {
+            return $exception->getStatusCode();
+        }
+
+        // Unknown exceptions are server errors!
+        return 500;
+    }
+
+    /**
+     * @param Exception $exception
+     * @return array View parameters 'title' and 'description'
+     */
+    protected function getPageTitleAndDescription(Exception $exception)
+    {
+        $translator = $this->getTranslator();
+
+        if ($exception instanceof SignatureValidationFailedException) {
+            $title = $translator->trans('stepup.error.signature_validation_failed.title');
+            $description = $translator->trans('stepup.error.signature_validation_failed.description');
+
+        } elseif ($exception instanceof UnsignedRequestException) {
+            $title = $translator->trans('stepup.error.unsigned_request.title');
+            $description = $translator->trans('stepup.error.unsigned_request.description');
+
+        } elseif ($exception instanceof UnsupportedSignatureException) {
+            $title = $translator->trans('stepup.error.unsupported_signature.title');
+            $description = $translator->trans('stepup.error.unsupported_signature.description');
+
+        } elseif ($exception instanceof UnknownServiceProviderException) {
+            $title = $translator->trans('stepup.error.unknown_service_provider.title');
+            $description = $exception->getMessage();
+
+        } elseif ($exception instanceof AuthnFailedSamlResponseException) {
+            $title = $translator->trans('stepup.error.authn_failed.title');
+            $description = $translator->trans('stepup.error.authn_failed.description');
+
+        } elseif ($exception instanceof PreconditionNotMetException) {
+            $title = $translator->trans('stepup.error.precondition_not_met.title');
+            $description = $translator->trans('stepup.error.precondition_not_met.description');
+
+        } elseif ($exception instanceof InvalidResponseException) {
+            $title = $translator->trans('stepup.error.authentication_error.title');
+            $description = $translator->trans('stepup.error.authentication_error.description');
+        } elseif ($exception instanceof AuthenticationException) {
+            $title = $translator->trans('stepup.error.authentication_error.title');
+            $description = $translator->trans('stepup.error.authentication_error.description');
+        } else {
+            $title = $translator->trans('stepup.error.generic_error.title');
+            $description = $translator->trans('stepup.error.generic_error.description');
+        }
+
+        return [
+            'title' => $title,
+            'description' => $description,
+        ];
+    }
+
+    /**
+     * @return TranslatorInterface
+     */
+    protected function getTranslator()
+    {
+        return $this->get('translator');
     }
 }
