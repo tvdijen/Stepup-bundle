@@ -61,3 +61,33 @@ The locale switcher is a form that can be rendered with the help of a Twig funct
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 ```
+
+## Release strategy
+
+### CHANGELOG
+The changelog for the bundle is kept in the `./CHANGELOG` file. A history of the releases can be found in this file.
+Previous RMT release notes are kept in this file for history purposes. Please use markdown to style the changelog.  
+
+Please update the changelog with any notable changes that are introduced in an upcoming release. If you are not yet 
+certain what the next release number will be, give the release title a generic value like `Upcoming release`. Make sure
+before merging the changes to the release branch to update the release title in the changelog.
+
+**Example CHANGELOG entry**
+```
+# 2.5.23
+Brief explenation on the major changes of this release
+
+## New features
+ * Title of PR of the new feature #30
+ * Support of POST binding for AuthnRequest #31
+ 
+## Bugfixes
+ * Title of PR of the bugfix #33
+
+## Improvements
+ * Title of PR of the improvement #29
+ 
+```
+
+When releasing a hotfix on a release branch, please update the changelog on the release branch and after releasing the
+hotfix, also merge the hotfix to develop.
