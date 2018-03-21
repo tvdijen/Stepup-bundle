@@ -21,7 +21,7 @@
         "guzzlehttp/guzzle": "^6.0",
         "monolog/monolog": "~1.11",
         "sensio/framework-extra-bundle": "~3",
-        "surfnet/stepup-saml-bundle": "dev-feature/specific-error-pages as 3.0.0",
+        "surfnet/stepup-saml-bundle": "^4.0",
         "symfony/config": "^2.7",
         "symfony/dependency-injection": "^2.7",
         "symfony/form": "^2.7",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "96c207db0a3afcf65a48c652b25a4133",
+    "content-hash": "cbaa352cdd72706e21cee7c51dc95465",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1052,16 +1052,16 @@
         },
         {
             "name": "surfnet/stepup-saml-bundle",
-            "version": "dev-feature/specific-error-pages",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/OpenConext/Stepup-saml-bundle.git",
-                "reference": "7f3a9314c1e02bce048d51d9c185c9728b0c4af3"
+                "reference": "9bb7098248c7b60c8b2cbc74d996b027de69e68a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/OpenConext/Stepup-saml-bundle/zipball/7f3a9314c1e02bce048d51d9c185c9728b0c4af3",
-                "reference": "7f3a9314c1e02bce048d51d9c185c9728b0c4af3",
+                "url": "https://api.github.com/repos/OpenConext/Stepup-saml-bundle/zipball/9bb7098248c7b60c8b2cbc74d996b027de69e68a",
+                "reference": "9bb7098248c7b60c8b2cbc74d996b027de69e68a",
                 "shasum": ""
             },
             "require": {
@@ -1096,7 +1096,7 @@
                 "stepup",
                 "surfnet"
             ],
-            "time": "2018-03-14T14:27:38+00:00"
+            "time": "2018-03-21T09:35:58+00:00"
         },
         {
             "name": "symfony/asset",
@@ -4860,18 +4860,9 @@
             "time": "2016-11-23T20:04:58+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "3.0.0",
-            "alias_normalized": "3.0.0.0",
-            "version": "dev-feature/specific-error-pages",
-            "package": "surfnet/stepup-saml-bundle"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "surfnet/stepup-saml-bundle": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
