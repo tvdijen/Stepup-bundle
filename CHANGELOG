@@ -1,3 +1,6 @@
+# 3.3.3
+Read request id from DI container when rendering error reports
+
 # 3.3.2
 Minor additions to error reporting improvements
 

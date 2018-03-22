@@ -58,7 +58,7 @@ class ExceptionController extends FrameworkController
 
         $timestamp = (new DateTime)->format(DateTime::ISO8601);
         $hostname  = $request->getHost();
-        $requestId = $request->headers->get(RequestIdRequestResponseListener::HEADER_NAME, false);
+        $requestId = $this->get('surfnet_stepup.request.request_id');
         $errorCode = Art::forException($exception);
         $userAgent = $request->headers->get('User-Agent');
         $ipAddress = $request->getClientIp();
@@ -68,7 +68,7 @@ class ExceptionController extends FrameworkController
             [
                 'timestamp'   => $timestamp,
                 'hostname'    => $hostname,
-                'request_id'  => $requestId,
+                'request_id'  => $requestId->get(),
                 'error_code'  => $errorCode,
                 'user_agent'  => $userAgent,
                 'ip_address'  => $ipAddress,
