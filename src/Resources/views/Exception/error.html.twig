@@ -36,8 +36,7 @@
 
     <p>{{ 'stepup.error.support_page.text'|trans({'%support_url%': global_view_parameters.supportUrl })|raw }}</p>
 
-    {% block back_button %}
-        <a class="btn btn-primary" href="/">{{ 'Back' }}</a>
-    {% endblock %}
+    {# For now the back button is not shown on the error page until a more intelligent solution is thought of #}
+    {% block back_button %}{% endblock %}
 
 {% endblock %}
