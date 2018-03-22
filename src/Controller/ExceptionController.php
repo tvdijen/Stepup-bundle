@@ -58,7 +58,7 @@ class ExceptionController extends FrameworkController
 
         $timestamp = (new DateTime)->format(DateTime::ISO8601);
         $hostname  = $request->getHost();
-        $requestId = $request->headers->get(RequestIdRequestResponseListener::HEADER_NAME, '-');
+        $requestId = $request->headers->get(RequestIdRequestResponseListener::HEADER_NAME, false);
         $errorCode = Art::forException($exception);
         $userAgent = $request->headers->get('User-Agent');
         $ipAddress = $request->getClientIp();
