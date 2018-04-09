@@ -56,17 +56,8 @@ services:
         class: Surfnet\StepupBundle\Monolog\Processor\ArtProcessor
         tags: [{ name: monolog.processor }]
 
-    surfnet_stepup.monolog.full_message_exception_gelf_message_formatter:
-        class: Surfnet\StepupBundle\Monolog\Formatter\FullMessageExceptionGelfMessageFormatter
-        arguments:
-            - "@surfnet_stepup.monolog.gelf_message_formatter"
-
     surfnet_stepup.monolog.json_formatter:
         class: Surfnet\StepupBundle\Monolog\Formatter\JsonFormatter
-
-    surfnet_stepup.monolog.gelf_message_formatter:
-        public: false
-        class: Monolog\Formatter\GelfMessageFormatter
 
     surfnet_stepup.listener.primary_log_exception_listener:
         class: Surfnet\StepupBundle\EventListener\CannotWriteToPrimaryLogExceptionExceptionListener
