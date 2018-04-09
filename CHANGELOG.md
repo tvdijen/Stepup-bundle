@@ -1,3 +1,6 @@
+# 3.4.0
+Remove support for graylog.
+
 # 3.3.3
 Read request id from DI container when rendering error reports
 
@@ -14,8 +17,9 @@ In this release error reporting is improved.
  * Implement error page redesign #47
  * Improve art-code algorithm #48
 
-VERSION 3  RELEASE 3.0
-=====================
+# Older versions
+
+## VERSION 3  RELEASE 3.0
 
    Version 3.2 - Addition of two reusable services
       14/03/2018 14:10  3.2.0  initial release
@@ -27,15 +31,13 @@ VERSION 3  RELEASE 3.0
    Version 3.0 - Removal of deprecated isGssf method
       30/11/2017 08:47  3.0.0  initial release
 
-VERSION 2  DYNAMIC CONFIGURATION OF SECOND FACTOR TYPES
-=======================================================
+## VERSION 2  DYNAMIC CONFIGURATION OF SECOND FACTOR TYPES
 
    Version 2.0 - Dynamic configuration of second factor types
       14/06/2017 15:03  2.0.1  The SecondFactorTypeService is now public
       08/06/2017 13:22  2.0.0  initial release
 
-VERSION 1  RELEASE 1.0
-======================
+## VERSION 1  RELEASE 1.0
 
    Version 1.7 - Updated Guzzle to Guzzle 6
       07/03/2017 14:44  1.7.0  initial release
@@ -61,8 +63,7 @@ VERSION 1  RELEASE 1.0
    Version 1.0 - Release 1.0
       19/06/2015 13:44  1.0.0  initial release
 
-VERSION 0  FIRST PILOT RELEASE
-==============================
+## VERSION 0  FIRST PILOT RELEASE
 
    Version 0.2 - Cryptographically secure OTP generation
       02/04/2015 16:06  0.2.0  initial release
