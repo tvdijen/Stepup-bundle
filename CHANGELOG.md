@@ -1,3 +1,6 @@
+# 3.4.1
+Add helper for determining registration expiration date
+
 # 3.4.0
 Remove support for graylog.
 
