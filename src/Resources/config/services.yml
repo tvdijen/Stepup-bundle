@@ -163,3 +163,6 @@ services:
 
     surfnet_stepup.provider.collection:
         class: Surfnet\StepupBundle\Value\Provider\ViewConfigCollection
+
+    surfnet_stepup.registration_expiration_helper:
+        class: Surfnet\StepupBundle\DateTime\RegistrationExpirationHelper

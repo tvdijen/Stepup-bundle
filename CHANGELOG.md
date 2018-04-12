@@ -1,3 +1,6 @@
+# 3.4.2
+Register the registration expiration helper as a service
+
 # 3.4.1
 Add helper for determining registration expiration date
 
