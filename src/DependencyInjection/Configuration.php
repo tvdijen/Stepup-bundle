@@ -52,10 +52,10 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->arrayNode('loa_definition')
+                    ->canBeDisabled()
                     ->children()
                         ->scalarNode('loa1')
                             ->example('https://gateway.tld/authentication/loa1')
-                            ->isRequired()
                             ->validate()
                             ->ifTrue(function ($value) {
                                 return !is_string($value);
@@ -65,7 +65,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->scalarNode('loa2')
                             ->example('https://gateway.tld/authentication/loa2')
-                            ->isRequired()
                             ->validate()
                             ->ifTrue(function ($value) {
                                 return !is_string($value);
@@ -75,7 +74,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                         ->scalarNode('loa3')
                             ->example('https://gateway.tld/authentication/loa3')
-                            ->isRequired()
                             ->validate()
                             ->ifTrue(function ($value) {
                                 return !is_string($value);
