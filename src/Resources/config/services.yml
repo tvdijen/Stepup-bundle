@@ -42,7 +42,7 @@ services:
 
     surfnet_stepup.monolog.application_name_processor:
         class: Surfnet\StepupBundle\Monolog\Processor\ApplicationNameProcessor
-        arguments: [%logging.application_name%]
+        arguments: ["%logging.application_name%"]
         tags:
             - { name: monolog.processor }
 
