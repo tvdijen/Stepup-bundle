@@ -45,7 +45,7 @@ class SurfnetStepupExtension extends Extension
         );
         $loader->load('services.yml');
 
-        if (isset($config['loa_definition'])) {
+        if (isset($config['loa_definition']) && $config['loa_definition']['enabled']) {
             $this->defineLoas($config['loa_definition'], $container);
         } else {
             $container->removeDefinition('surfnet_stepup.service.loa_resolution');
@@ -80,8 +80,8 @@ class SurfnetStepupExtension extends Extension
             $container->removeDefinition('surfnet_stepup.locale_cookie_settings');
         }
 
-        $container->getDefinition('surfnet_stepup.form.choice_list.locales')
-            ->replaceArgument(0, $container->getParameter('locales'));
+        $this->configureLocaleSelectionWidget($config, $container);
+        $this->configureSecondFactorTypeService($config, $container);
     }
 
     private function defineLoas(array $loaDefinitions, ContainerBuilder $container)
@@ -159,5 +159,23 @@ class SurfnetStepupExtension extends Extension
         $container
             ->getDefinition('surfnet_stepup.service.sms_second_factor')
             ->replaceArgument(0, new Reference($config['sms']['service']));
+    }
+
+    private function configureLocaleSelectionWidget(array $loaDefinitions, ContainerBuilder $container)
+    {
+        if ($container->hasParameter('locales')) {
+            $container->getDefinition('surfnet_stepup.form.choice_list.locales')
+                ->replaceArgument(0, $container->getParameter('locales'));
+        } else {
+            $container->removeDefinition('surfnet_stepup.form.choice_list.locales');
+            $container->removeDefinition('surfnet_stepup.form.switch_locale');
+        }
+    }
+
+    private function configureSecondFactorTypeService(array $loaDefinitions, ContainerBuilder $container)
+    {
+        if (!$container->hasParameter('enabled_generic_second_factors')) {
+            $container->removeDefinition('surfnet_stepup.service.second_factor_type');
+        }
     }
 }

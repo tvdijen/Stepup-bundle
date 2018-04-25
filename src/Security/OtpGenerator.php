@@ -38,7 +38,7 @@ final class OtpGenerator
     const BITS_PER_CHARACTER = 5;
 
     /**
-     * Securely generate a 8-character OTP containing only characters from the OtpGenerator::CHARACTER_SET constant.
+     * Securely generate an arbitrary length OTP containing only characters from the OtpGenerator::CHARACTER_SET constant.
      * Based on https://gist.github.com/pmeulen/3dff8bab3227ed340dd1
      *
      * @param int $length The length of the OTP to generate

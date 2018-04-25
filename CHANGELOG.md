@@ -1,3 +1,9 @@
+# 3.5.0
+Included in this release:
+
+ * Experimental support for symfony 3
+ * Make all configuration optional
+
 # 3.4.2
 Register the registration expiration helper as a service
 
