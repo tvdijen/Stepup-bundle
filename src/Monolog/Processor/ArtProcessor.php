@@ -18,6 +18,7 @@
 
 namespace Surfnet\StepupBundle\Monolog\Processor;
 
+use Exception;
 use Surfnet\StepupBundle\Exception\Art;
 
 class ArtProcessor
@@ -29,6 +30,13 @@ class ArtProcessor
     public function __invoke(array $record)
     {
         if (!isset($record['context']['exception'])) {
+            return $record;
+        }
+
+        // Symfony 3 triggers this processor with SilencedErrorContext objects
+        // in case of PHP errors (deprecation notices, errors, etc). We should
+        // only generate Art codes for exceptions.
+        if (!$record['context']['exception'] instanceof Exception) {
             return $record;
         }
 
