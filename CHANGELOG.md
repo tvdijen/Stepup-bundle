@@ -1,3 +1,8 @@
+# 3.5.1
+Included in this release:
+
+ * Fix deprecation warning about private service in symfony 3
+
 # 3.5.0
 Included in this release:
 

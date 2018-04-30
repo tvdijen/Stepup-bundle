@@ -12,6 +12,7 @@ services:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
     surfnet_stepup.request.request_id:
+        public: true
         class: Surfnet\StepupBundle\Request\RequestId
         arguments:
             - "@surfnet_stepup.request.request_id_generator"
