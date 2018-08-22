@@ -1,3 +1,6 @@
+# 3.5.2
+Removed the lockfile from the project to prevent compatibility issues in newer Symfony versions.
+
 # 3.5.1
 Included in this release:
 
