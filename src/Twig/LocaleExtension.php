@@ -19,6 +19,7 @@
 namespace Surfnet\StepupBundle\Twig;
 
 use Surfnet\StepupBundle\Command\SwitchLocaleCommand;
+use Surfnet\StepupBundle\Form\Type\SwitchLocaleType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig_Extension as Extension;
 use Twig_SimpleFunction as SimpleFunction;
@@ -48,7 +49,7 @@ final class LocaleExtension extends Extension
         $command->locale = $currentLocale;
 
         $form = $this->formFactory->create(
-            'stepup_switch_locale',
+            SwitchLocaleType::class,
             $command,
             ['route' => $route, 'route_parameters' => $routeParameters]
         );
