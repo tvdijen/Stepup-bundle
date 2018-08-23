@@ -20,6 +20,8 @@ namespace Surfnet\StepupBundle\Form\Type;
 
 use Surfnet\StepupBundle\Form\ChoiceList\LocaleChoiceList;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -46,7 +48,7 @@ final class SwitchLocaleType extends AbstractType
     {
         $builder->setAction($this->urlGenerator->generate($options['route'], $options['route_parameters']));
         $builder->setMethod('POST');
-        $builder->add('locale', 'choice', [
+        $builder->add('locale', ChoiceType::class, [
             'label' => /** @Ignore */ false,
             'required' => true,
             'widget_addon_prepend' => [
@@ -55,7 +57,7 @@ final class SwitchLocaleType extends AbstractType
             'choices' => $this->localeChoiceList->create(),
             'choices_as_values' => true,
         ]);
-        $builder->add('switch', 'submit', [
+        $builder->add('switch', SubmitType::class, [
             'label' => 'stepup_middleware_client.form.switch_locale.switch',
             'attr' => [ 'class' => 'btn btn-default' ],
         ]);
@@ -75,7 +77,7 @@ final class SwitchLocaleType extends AbstractType
         $resolver->setAllowedTypes('route_parameters', 'array');
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'stepup_switch_locale';
     }
