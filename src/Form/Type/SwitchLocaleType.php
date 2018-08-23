@@ -24,6 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class SwitchLocaleType extends AbstractType
@@ -55,7 +56,6 @@ final class SwitchLocaleType extends AbstractType
                 'icon' => 'language'
             ],
             'choices' => $this->localeChoiceList->create(),
-            'choices_as_values' => true,
         ]);
         $builder->add('switch', SubmitType::class, [
             'label' => 'stepup_middleware_client.form.switch_locale.switch',
