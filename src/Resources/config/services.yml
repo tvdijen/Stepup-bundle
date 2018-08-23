@@ -167,3 +167,4 @@ services:
 
     surfnet_stepup.registration_expiration_helper:
         class: Surfnet\StepupBundle\DateTime\RegistrationExpirationHelper
+        public: true
