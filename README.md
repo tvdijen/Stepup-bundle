@@ -1,11 +1,11 @@
 # Step-up Bundle
 [![Build Status](https://travis-ci.org/OpenConext/Stepup-bundle.svg)](https://travis-ci.org/OpenConext/Stepup-bundle) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/OpenConext/Stepup-bundle/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/OpenConext/Stepup-bundle/?branch=develop) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5b8b8d8b-e917-4954-818b-782d9e181c75/mini.png)](https://insight.sensiolabs.com/projects/5b8b8d8b-e917-4954-818b-782d9e181c75)
 
-A Symfony2 bundle that holds shared code and framework integration for all Step-up applications. See [Stepup-Deploy](https://github.com/OpenConext/Stepup-Deploy) for an overview of Stepup.
+A Symfony 2 and 3 bundle that holds shared code and framework integration for all Step-up applications. See [Stepup-Deploy](https://github.com/OpenConext/Stepup-Deploy) for an overview of Stepup.
 
 ## Installation
 
- * Add the package to your Composer file
+ * Add the package to your Composer file (For Symfony 2 support, please use a version constraint "~3.5")
     ```sh
     composer require surfnet/stepup-bundle
     ```

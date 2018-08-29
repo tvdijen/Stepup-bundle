@@ -1,3 +1,7 @@
+# 4.0.0
+Added Symfony 3.4 support. This release might not work with StepUp components that do not use Symfony 3.4. This is due
+to the change made to the FormFactory and the usage of it by the LocaleExtension.
+
 # 3.5.2
 Removed the lockfile from the project to prevent compatibility issues in newer Symfony versions.
 
