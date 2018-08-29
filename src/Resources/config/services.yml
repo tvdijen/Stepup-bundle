@@ -3,6 +3,10 @@ services:
     _defaults:
         public: true
 
+    logger:
+        alias: 'monolog.logger'
+        public: true
+
     surfnet_stepup.json_convertible_param_converter:
         class: Surfnet\StepupBundle\Request\JsonConvertibleParamConverter
         arguments:
