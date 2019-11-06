@@ -27,3 +27,8 @@ branches:
   only:
     - master
     - develop
+
+addons:
+  apt:
+    packages:
+      - ant
