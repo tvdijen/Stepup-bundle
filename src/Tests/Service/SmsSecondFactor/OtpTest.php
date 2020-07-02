@@ -19,7 +19,7 @@
 namespace Surfnet\StepupBundle\Tests\Service\SmsSecondFactor;
 
 use DateInterval;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase ;
 use Surfnet\StepupBundle\Service\SmsSecondFactor\Otp;
 
 class OtpTest extends TestCase

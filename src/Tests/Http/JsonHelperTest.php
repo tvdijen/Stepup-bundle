@@ -2,7 +2,7 @@
 
 namespace Surfnet\Stepup\Tests\Helper;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase ;
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 use Surfnet\StepupBundle\Exception\JsonException;
 use Surfnet\StepupBundle\Http\JsonHelper;

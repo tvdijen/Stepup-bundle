@@ -21,7 +21,7 @@ namespace Surfnet\StepupBundle\DependencyInjection\Configurator;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Mockery as m;
-use PHPUnit_Framework_TestCase as UnitTest;
+use PHPUnit\Framework\TestCase as UnitTest;
 use Surfnet\StepupBundle\Guzzle\Middleware\GuzzleRequestIdInjector;
 
 class GuzzleClientRequestIdConfiguratorTest extends UnitTest

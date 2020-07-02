@@ -19,7 +19,7 @@
 namespace Surfnet\StepupBundle\Tests\DateTime;
 
 use DateTime;
-use PHPUnit_Framework_TestCase as UnitTest;
+use PHPUnit\Framework\TestCase as UnitTest;
 use Surfnet\StepupBundle\DateTime\RegistrationExpirationHelper;
 use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 

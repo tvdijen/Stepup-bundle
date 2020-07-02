@@ -18,7 +18,7 @@
 
 namespace Surfnet\StepupBundle\Tests\Value;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase ;
 use Surfnet\StepupBundle\Value\YubikeyOtp;
 use Surfnet\StepupBundle\Value\YubikeyPublicId;
 

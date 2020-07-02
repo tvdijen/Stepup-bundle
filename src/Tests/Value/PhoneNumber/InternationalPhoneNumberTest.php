@@ -18,7 +18,7 @@
 
 namespace Surfnet\StepupBundle\Tests\Value\PhoneNumber;
 
-use PHPUnit_Framework_TestCase as UnitTest;
+use PHPUnit\Framework\TestCase as UnitTest;
 use Surfnet\StepupBundle\Value\PhoneNumber\CountryCode;
 use Surfnet\StepupBundle\Value\PhoneNumber\InternationalPhoneNumber;
 use Surfnet\StepupBundle\Value\PhoneNumber\PhoneNumber;

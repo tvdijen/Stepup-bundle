@@ -18,9 +18,10 @@
 
 namespace Surfnet\StepupBundle\Tests\Value;
 
+use PHPUnit\Framework\TestCase;
 use Surfnet\StepupBundle\Value\YubikeyOtp;
 
-class YubikeyOtpTest extends \PHPUnit_Framework_TestCase
+class YubikeyOtpTest extends TestCase
 {
     public function otpStrings()
     {

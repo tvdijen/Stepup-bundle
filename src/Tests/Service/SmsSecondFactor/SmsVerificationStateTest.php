@@ -20,7 +20,7 @@ namespace Surfnet\StepupBundle\Tests\Service\SmsSecondFactor;
 
 use DateInterval;
 use DateTime;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase ;
 use Surfnet\StepupBundle\Service\SmsSecondFactor\SmsVerificationState;
 use Surfnet\StepupBundle\Tests\DateTimeHelper;
 

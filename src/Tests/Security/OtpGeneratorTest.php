@@ -18,7 +18,7 @@
 
 namespace Surfnet\StepupBundle\Security;
 
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase ;
 
 final class OtpGeneratorTest extends TestCase
 {

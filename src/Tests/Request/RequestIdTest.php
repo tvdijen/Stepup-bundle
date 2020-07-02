@@ -19,9 +19,10 @@
 namespace Surfnet\StepupBundle\Tests\Request;
 
 use Mockery as m;
+use PHPUnit\Framework\TestCase;
 use Surfnet\StepupBundle\Request\RequestId;
 
-class RequestIdTest extends \PHPUnit_Framework_TestCase
+class RequestIdTest extends TestCase
 {
     public function testItCanSetARequestId()
     {
