@@ -19,6 +19,7 @@
 namespace Surfnet\StepupBundle\Tests\Value;
 
 use PHPUnit\Framework\TestCase;
+use Surfnet\StepupBundle\Exception\InvalidArgumentException;
 use Surfnet\StepupBundle\Value\YubikeyOtp;
 
 class YubikeyOtpTest extends TestCase
@@ -107,7 +108,8 @@ class YubikeyOtpTest extends TestCase
      */
     public function testItThrowsAnExceptionWhenGivenArgumentIsNotAString($nonString)
     {
-        $this->setExpectedException('Surfnet\StepupBundle\Exception\InvalidArgumentException', 'not a string');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('not a string');
 
         YubikeyOtp::fromString($nonString);
     }
@@ -133,7 +135,8 @@ class YubikeyOtpTest extends TestCase
      */
     public function testItThrowsAnExceptionWhenGivenStringIsNotAnOtpString($nonOtpString)
     {
-        $this->setExpectedException('Surfnet\StepupBundle\Exception\InvalidArgumentException', 'not a valid OTP');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('not a valid OTP');
 
         YubikeyOtp::fromString($nonOtpString);
     }

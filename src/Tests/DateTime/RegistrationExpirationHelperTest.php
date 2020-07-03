@@ -81,10 +81,8 @@ class RegistrationExpirationHelperTest extends UnitTest
 
     public function test_invalid_interval_is_rejected()
     {
-        $this->setExpectedException(
-            InvalidArgumentException::class,
-            'The provided DateInterval interval specification ("D41P") is invalid'
-        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The provided DateInterval interval specification ("D41P") is invalid');
 
         $this->buildHelper(null, 'D41P');
     }

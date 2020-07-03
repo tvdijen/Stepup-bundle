@@ -33,6 +33,8 @@ use Surfnet\StepupBundle\Request\RequestIdGenerator;
 
 class GuzzleRequestIdInjectorTest extends UnitTest
 {
+    use m\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
     /**
      * @group Guzzle
      */

@@ -26,6 +26,8 @@ use Surfnet\StepupBundle\Guzzle\Middleware\GuzzleRequestIdInjector;
 
 class GuzzleClientRequestIdConfiguratorTest extends UnitTest
 {
+    use m\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
     /**
      * @group Configurator
      * @group Guzzle
