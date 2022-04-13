@@ -103,6 +103,7 @@ class ExceptionController extends FrameworkController
     /**
      * @param Exception $exception
      * @return array View parameters 'title' and 'description'
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function getPageTitleAndDescription(Exception $exception)
     {
