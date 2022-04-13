@@ -128,6 +128,9 @@ class ExceptionController extends FrameworkController
             $title = $translator->trans('stepup.error.authn_failed.title');
             $description = $translator->trans('stepup.error.authn_failed.description');
 
+        } elseif ($exception instanceof MissingRequiredAttributeException) {
+            $title = $translator->trans('stepup.error.missing_required_attributes.title');
+            $description = $exception->getMessage();
         } elseif ($exception instanceof PreconditionNotMetException) {
             $title = $translator->trans('stepup.error.precondition_not_met.title');
             $description = $translator->trans('stepup.error.precondition_not_met.description');
