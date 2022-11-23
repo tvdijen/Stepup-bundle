@@ -20,7 +20,7 @@
         "guzzlehttp/guzzle": "^6.0",
         "monolog/monolog": "~1.11",
         "sensio/framework-extra-bundle": "^5.4",
-        "surfnet/stepup-saml-bundle": "^4.1.8",
+        "surfnet/stepup-saml-bundle": "dev-feature/bump-dependencies",
         "symfony/config": "^4.4",
         "symfony/dependency-injection": "^4.4",
         "symfony/form": "^4.4",
